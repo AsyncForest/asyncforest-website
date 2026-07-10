@@ -1,0 +1,118 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base
+  title="Work with me — Async Forest"
+  description="Three ways to work with me: assurance and due diligence, advisory sprints, and ongoing counsel. All of them produce written judgement."
+>
+  <section class="intro container container--narrow">
+    <h1>Work with me</h1>
+    <p>
+      Three ways to work with me. All of them produce written judgement: what I
+      looked at, what I concluded, and why. Everything is scoped in an itemised
+      statement of work before we start, and engagements are contracted with
+      Async Forest Ltd.
+    </p>
+  </section>
+
+  <section class="engagement container container--narrow" id="assurance" aria-labelledby="assurance-heading">
+    <p class="engagement__question mono">“Is it sound?”</p>
+    <h2 id="assurance-heading">Assurance &amp; due diligence</h2>
+    <p>
+      An independent review of a system, codebase, or AI integration.
+      Point-in-time and scope-limited: the report speaks to what I examined,
+      when. You get prioritised, actionable findings and a clear conclusion,
+      in writing. A retest is available once findings have been addressed.
+    </p>
+    <p>
+      For investors — technical due diligence and portfolio reviews — boards,
+      universities and institutions, and founders preparing to raise.
+    </p>
+    <p class="engagement__price mono">from £[PRICE SLOT — assurance]</p>
+  </section>
+
+  <section class="engagement container container--narrow" id="sprints" aria-labelledby="sprints-heading">
+    <p class="engagement__question mono">“What should we do?”</p>
+    <h2 id="sprints-heading">Advisory sprints</h2>
+    <p>
+      A time-boxed sprint, typically two to four weeks, organised around one
+      named decision: GenAI architecture, build-vs-buy, scale readiness, the
+      technical narrative before a raise. The deliverable is a decision memo —
+      the question, the options, the trade-offs, a recommendation and the
+      reasoning.
+    </p>
+    <p class="engagement__price mono">from £[PRICE SLOT — sprint]</p>
+  </section>
+
+  <section class="engagement container container--narrow" id="counsel" aria-labelledby="counsel-heading">
+    <p class="engagement__question mono">“Keep us honest.”</p>
+    <h2 id="counsel-heading">Ongoing counsel</h2>
+    <p>
+      For teams putting AI into production: a standing fortnightly session,
+      async written answers to hard questions, and a quarterly deep-dive, on
+      renewable terms. An independent voice before the board meeting, not
+      another status call.
+    </p>
+    <p class="engagement__price mono">structured engagements from £[PRICE SLOT — counsel]/month</p>
+  </section>
+
+  <section class="boundaries container container--narrow" aria-labelledby="boundaries-heading">
+    <h2 id="boundaries-heading">How I work</h2>
+    <ul>
+      <li>Engagements are point-in-time and scope-limited; the report speaks to what I examined, when.</li>
+      <li>Deliverables are written. Meetings are for decisions, not status.</li>
+      <li>Regulatory findings (UK GDPR, Children's Code, Online Safety Act, EU AI Act) are technical observations, not legal advice; where legal interpretation is needed I'll say so.</li>
+      <li>I'm not a CREST penetration-testing provider; where a formal pen test is required I refer to accredited partners and can scope and interpret it for you.</li>
+      <li>Capped time-and-materials on unfamiliar codebases; fixed scope where the ground is known.</li>
+      <li>Engagements are contracted with, and reports issued by, Async Forest Ltd, which carries professional indemnity insurance.</li>
+    </ul>
+  </section>
+
+  <section class="close container container--narrow">
+    <a class="btn btn--primary" href="/contact/">Tell me about the decision you're facing</a>
+  </section>
+</Base>
+
+<style>
+  .intro {
+    padding-block: var(--section-y) var(--space-8);
+  }
+  .intro p {
+    font-size: var(--text-md);
+    max-width: 62ch;
+  }
+
+  .engagement {
+    padding-block: var(--space-8);
+  }
+  .engagement__inner-rule,
+  .engagement__question {
+    font-size: var(--text-sm);
+    color: var(--text-muted);
+    margin-bottom: var(--space-3);
+    padding-top: var(--space-8);
+    border-top: 1px solid var(--border-default);
+  }
+  .engagement__price {
+    margin-top: var(--space-6);
+    font-size: var(--text-sm);
+    color: var(--text-muted);
+  }
+
+  .boundaries {
+    padding-block: var(--space-8) var(--space-12);
+  }
+  .boundaries h2 {
+    padding-top: var(--space-8);
+    border-top: 1px solid var(--border-default);
+  }
+  .boundaries li {
+    max-width: 68ch;
+    margin-bottom: var(--space-3);
+  }
+
+  .close {
+    padding-block: var(--space-8);
+  }
+</style>
