@@ -1,418 +1,194 @@
 ---
+import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
-import { services } from '../data/services';
+
+const essays = (await getCollection('essays', ({ data }) => !data.draft))
+  .sort((a, b) => {
+    if (a.data.pinned !== b.data.pinned) return a.data.pinned ? -1 : 1;
+    return b.data.date.valueOf() - a.data.date.valueOf();
+  })
+  .slice(0, 3);
+
+const doors = [
+  {
+    question: '“Is it sound?”',
+    href: '/work/#assurance',
+    body:
+      'Independent review of a system, codebase, or AI integration — a scope-limited written report with prioritised findings and a clear conclusion. For investors, boards, and anyone who needs verification rather than reassurance.',
+  },
+  {
+    question: '“What should we do?”',
+    href: '/work/#sprints',
+    body:
+      'A time-boxed advisory sprint built around one decision: GenAI architecture, build-vs-buy, scale readiness, pre-raise technical narrative. Options, trade-offs, and a written recommendation with reasons.',
+  },
+  {
+    question: '“Keep us honest.”',
+    href: '/work/#counsel',
+    body:
+      'Ongoing counsel for teams putting AI into production — a standing session, written answers to hard questions, an independent voice before the board meeting.',
+  },
+];
 ---
 
 <Base
-  title="Async Forest Advisory — independent technical assurance"
-  description="Independent technical and AI assurance for founders and investors. Fixed-scope audits by a named senior expert: due diligence, AI readiness, and AI-built app hardening."
+  title="Async Forest — Henry Franks"
+  description="I help companies and investors make high-stakes decisions about software and AI — the kind you want to get right the first time."
 >
-  <!-- 1 · Hero — the one focal point -->
-  <section class="hero">
-    <div class="container">
-      <span class="eyebrow">Independent technical assurance</span>
-      <h1 class="hero__title">
-        An expert who checks it <em class="hero__underline">themselves</em> —
-        and stands behind the answer.
-      </h1>
-      <p class="lede hero__lede">
-        I audit codebases, architectures, and AI systems for founders and
-        investors, then put my name on a written report: what's sound, what
-        isn't, and what to fix first.
-      </p>
-      <div class="hero__actions">
-        <a href="/services/" class="btn btn--primary">See the three audits</a>
-        <a href="/how-it-works/" class="hero__quiet-link">or read how an engagement runs</a>
-      </div>
-      <p class="hero__meta mono">
-        Fixed scope · fixed price · written report · 5–10 working days
-      </p>
-    </div>
+  <section class="hero container container--narrow">
+    <h1>
+      I help companies and investors make high-stakes decisions about software
+      and AI — the kind you want to get right the first time.
+    </h1>
+    <p class="hero__sub">
+      Fifteen years as a startup CTO and chief architect; a PhD in trust in
+      autonomous systems; guest lecturer on responsible AI at King's College
+      London and Notre Dame.
+    </p>
+    <a class="btn btn--primary" href="/contact/">Tell me about the decision you're facing</a>
   </section>
 
-  <!-- 2 · Why independent -->
-  <section class="section section--warm">
-    <div class="container why">
-      <div class="why__text">
-        <span class="eyebrow">Why this exists</span>
-        <h2>Self-assessment isn't assurance</h2>
-        <p>
-          Most of what passes for technical confidence today is the team marking
-          its own homework — or an AI marking the homework another AI did. A
-          chatbot's summary of your codebase carries no accountability. Neither
-          does a deck slide that says "enterprise-grade".
-        </p>
-        <p>
-          Independent assurance is older and simpler: one qualified person reads
-          the actual system, forms a view, writes it down, and is answerable for
-          it. That's the entire product here. If the answer is "this is in good
-          shape", you'll get that in writing too — it's just as useful in front
-          of an investor.
-        </p>
-      </div>
-      <div class="card why__card">
-        <span class="callout__label">Every report includes</span>
-        <ul class="why__list">
-          <li>A risk matrix scored across the agreed dimensions</li>
-          <li>Findings in priority order, each with a concrete fix</li>
-          <li>A two-page summary written for non-engineers</li>
-          <li>Explicit scope: what was reviewed, what wasn't</li>
-          <li>A 60-minute debrief once you've read it</li>
-        </ul>
-      </div>
-    </div>
+  <section class="problem container container--narrow">
+    <p>
+      GenAI has made it cheap to build and expensive to be wrong. Demos ship in
+      a weekend; the failures — cost blowouts, security holes, regulatory
+      exposure, architectures that can't scale — surface after the money is
+      committed. Internal teams grade their own homework, and AI tools tell you
+      what you want to hear. At some point you need someone independent to
+      actually look.
+    </p>
   </section>
 
-  <!-- 3 · The deliverable, shown not described -->
-  <section class="section">
-    <div class="container">
-      <span class="eyebrow">The deliverable</span>
-      <h2>A report you can act on the same week</h2>
-      <p class="lede">
-        Findings are scored, prioritised, and written in plain English. Here's
-        the shape of a risk matrix — colour only where something needs your
-        attention.
-      </p>
-      <div class="rag card">
-        <div class="rag__row rag__row--head">
-          <span>Dimension</span><span>Rating</span><span>Finding</span>
-        </div>
-        <div class="rag__row">
-          <span class="rag__dim">Architecture</span>
-          <span class="rag__status rag__status--ok">Sound</span>
-          <span class="rag__note">Clean service boundaries; scaling plan holds to ~50× current load</span>
-        </div>
-        <div class="rag__row">
-          <span class="rag__dim">Code quality</span>
-          <span class="rag__status rag__status--ok">Sound</span>
-          <span class="rag__note">Consistent, tested, reviewable — no action needed</span>
-        </div>
-        <div class="rag__row">
-          <span class="rag__dim">AI integration</span>
-          <span class="rag__status rag__status--warn">Watch</span>
-          <span class="rag__note">No fallback when the model provider degrades; cost untested at peak load</span>
-        </div>
-        <div class="rag__row">
-          <span class="rag__dim">Security posture</span>
-          <span class="rag__status rag__status--fix">Fix first</span>
-          <span class="rag__note">Access tokens in client code; est. 2–3 days to remediate</span>
-        </div>
-      </div>
-      <p class="rag__caption mono">Illustrative rows — dimensions are agreed per engagement.</p>
-    </div>
-  </section>
-
-  <!-- 4 · The three audits -->
-  <section class="section section--warm" id="services">
-    <div class="container">
-      <span class="eyebrow">Services</span>
-      <h2>Three audits, fixed scope, priced up front</h2>
-      <p class="lede">
-        Every engagement is a point-in-time review with a written report. You
-        know the price and the turnaround before anything starts.
-      </p>
-      <div class="offers">
-        {services.map((s) => (
-          <a href={`/services/${s.slug}/`} class="card offer">
-            <span class="offer__eyebrow">{s.eyebrow}</span>
-            <h3 class="offer__name">{s.name}</h3>
-            <p class="offer__short">{s.short}</p>
-            <div class="offer__meta">
-              <span class="offer__price">{s.price}</span>
-              <span class="offer__turnaround mono">{s.turnaround}</span>
-            </div>
-            <span class="offer__link">Read the full scope</span>
+  <section class="doors container container--narrow" aria-label="Ways to work with me">
+    <ol class="doors__list">
+      {doors.map((d) => (
+        <li class="door">
+          <a class="door__link" href={d.href}>
+            <span class="door__question">{d.question}</span>
+            <span class="door__body">{d.body}</span>
           </a>
-        ))}
-      </div>
-    </div>
+        </li>
+      ))}
+    </ol>
   </section>
 
-  <!-- 5 · Process strip -->
-  <section class="section">
-    <div class="container">
-      <span class="eyebrow">How it works</span>
-      <h2>Five steps, one meeting</h2>
-      <ol class="steps">
-        <li class="steps__item">
-          <span class="steps__num mono">01</span>
-          <h3>Scope</h3>
-          <p>A short call or email exchange fixes what's in, what's out, and the price. It goes in writing before anything starts.</p>
+  <section class="writing container container--narrow" aria-labelledby="writing-heading">
+    <h2 class="eyebrow" id="writing-heading">Selected writing</h2>
+    <ul class="writing__list">
+      {essays.map((essay) => (
+        <li class="writing__item">
+          <a class="writing__title" href={`/writing/${essay.id}/`}>{essay.data.title}</a>
+          <p class="writing__standfirst">{essay.data.standfirst}</p>
         </li>
-        <li class="steps__item">
-          <span class="steps__num mono">02</span>
-          <h3>Access</h3>
-          <p>Read-only repository and documentation access under NDA. I never need write access, and nothing leaves my machines.</p>
-        </li>
-        <li class="steps__item">
-          <span class="steps__num mono">03</span>
-          <h3>Review</h3>
-          <p>I do the review personally — no juniors, no offshore bench, no handoffs. Questions come batched, not as a meeting series.</p>
-        </li>
-        <li class="steps__item">
-          <span class="steps__num mono">04</span>
-          <h3>Report</h3>
-          <p>You get the written report on the agreed date: risk matrix, prioritised findings, plain-English summary.</p>
-        </li>
-        <li class="steps__item">
-          <span class="steps__num mono">05</span>
-          <h3>Debrief</h3>
-          <p>One hour to walk through it, argue with it, and agree what happens next. Follow-on help is available but never assumed.</p>
-        </li>
-      </ol>
-      <a href="/how-it-works/" class="btn btn--ghost">Read the whole process</a>
-    </div>
+      ))}
+    </ul>
+    <p class="writing__more"><a href="/writing/">All writing</a></p>
   </section>
 
-  <!-- 6 · The named human -->
-  <section class="section section--warm">
-    <div class="container about-teaser">
-      <div class="about-teaser__portrait" aria-hidden="true">
-        <span class="mono">Photo to follow</span>
-      </div>
-      <div>
-        <span class="eyebrow">Who does the work</span>
-        <h2>Dr Henry Franks — and only Dr Henry Franks</h2>
-        <p>
-          PhD from Warwick on trust and verification in multi-agent systems.
-          A decade-plus as startup CTO and chief architect, currently Chief
-          Architect at Climate Policy Radar. Guest lecturer on responsible AI
-          at King's College London and Notre Dame.
-        </p>
-        <p>
-          The reason this practice is one person isn't budget — it's
-          accountability. You know exactly who read your code, and whose
-          judgement you're paying for.
-        </p>
-        <a href="/about/" class="btn btn--ghost">More about Henry</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- 7 · Boundaries -->
-  <section class="section">
-    <div class="container container--narrow">
-      <div class="callout callout--boundary">
-        <span class="callout__label">Scope, stated plainly</span>
-        <p>
-          Every report is point-in-time and scope-limited. Regulatory findings
-          are <strong>technical observations, not legal advice</strong> — where
-          something needs a lawyer, the report says so. This is an expert
-          review, not a CREST-accredited penetration test; when a deal needs a
-          formal pen test, I refer a CREST partner rather than pretend.
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <!-- 8 · Final CTA -->
-  <section class="section section--dark">
-    <div class="container cta">
-      <span class="eyebrow">Next step</span>
-      <h2>Tell me what needs checking</h2>
-      <p>
-        A few lines about the system and the decision it's blocking is enough.
-        You'll get a straight answer on scope, price, and dates — usually
-        within one working day.
-      </p>
-      <a href="/contact/" class="btn btn--on-dark">Start a conversation</a>
-    </div>
+  <section class="close container container--narrow">
+    <p>
+      If you're facing one of these decisions, the fastest way to start is to
+      tell me about it.
+    </p>
+    <a class="btn btn--primary" href="/contact/">Tell me about the decision you're facing</a>
   </section>
 </Base>
 
 <style>
-  /* Hero */
   .hero {
-    padding-block: clamp(5rem, 12vw, 9rem) var(--section-y);
+    padding-block: var(--section-y) var(--space-16);
   }
-  .hero__title {
-    max-width: 21ch;
+  .hero h1 {
+    max-width: 26ch;
     margin-bottom: var(--space-6);
   }
-  .hero__title em {
-    font-style: normal;
-  }
-  .hero__underline {
-    box-shadow: inset 0 -0.14em 0 0 var(--accent);
-  }
-  .hero__lede { margin-bottom: var(--space-8); }
-  .hero__actions {
-    display: flex;
-    align-items: center;
-    gap: var(--space-6);
-    flex-wrap: wrap;
+  .hero__sub {
+    font-size: var(--text-md);
+    color: var(--text-muted);
+    max-width: 58ch;
     margin-bottom: var(--space-8);
   }
-  .hero__quiet-link {
-    font-size: var(--text-base);
-    color: var(--text-muted);
+
+  .problem {
+    padding-block: var(--space-8);
   }
-  .hero__quiet-link:hover { color: var(--text-strong); }
-  .hero__meta {
-    max-width: none;
-    font-size: var(--text-xs);
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--text-muted);
+  .problem p {
+    font-size: var(--text-md);
+    max-width: 62ch;
   }
 
-  /* Why */
-  .why {
-    display: grid;
-    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
-    gap: var(--space-16);
-    align-items: start;
+  /* The signature element: the three buyer questions as large, quiet type. */
+  .doors {
+    padding-block: var(--space-16);
   }
-  .why__list { margin: 0; padding-left: 1.1em; }
-  .why__list li { margin-bottom: var(--space-3); }
-
-  /* RAG sample */
-  .rag {
-    padding: var(--space-4) var(--space-6);
-    margin-top: var(--space-8);
-    overflow-x: auto;
-  }
-  .rag__row {
-    display: grid;
-    grid-template-columns: 160px 110px minmax(280px, 1fr);
-    gap: var(--space-6);
-    align-items: baseline;
-    padding-block: var(--space-4);
-    border-bottom: 1px solid var(--border-subtle);
-  }
-  .rag__row:last-child { border-bottom: 0; }
-  .rag__row--head {
-    font-family: var(--font-mono);
-    font-size: var(--text-xs);
-    letter-spacing: var(--tracking-eyebrow);
-    text-transform: uppercase;
-    color: var(--text-muted);
-  }
-  .rag__dim { font-weight: var(--weight-medium); color: var(--text-strong); }
-  .rag__status {
-    justify-self: start;
-    padding: 1px var(--space-3);
-    border-radius: var(--radius-full);
-    font-family: var(--font-mono);
-    font-size: var(--text-xs);
-    border: 1px solid var(--border-default);
-    color: var(--text-muted);
-    background: var(--surface-warm);
-    white-space: nowrap;
-  }
-  .rag__status--warn {
-    color: var(--amber-700);
-    border-color: var(--warning);
-    background: var(--warning-soft);
-  }
-  .rag__status--fix {
-    color: var(--red-600);
-    border-color: var(--danger);
-    background: var(--danger-soft);
-  }
-  .rag__note { color: var(--text-muted); font-size: var(--text-base); }
-  .rag__caption {
-    margin-top: var(--space-3);
-    font-size: var(--text-xs);
-    color: var(--text-muted);
-  }
-
-  /* Offers */
-  .offers {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: var(--space-6);
-    margin-top: var(--space-10);
-  }
-  .offer { display: flex; flex-direction: column; }
-  .offer__eyebrow {
-    font-family: var(--font-mono);
-    font-size: var(--text-xs);
-    letter-spacing: var(--tracking-eyebrow);
-    text-transform: uppercase;
-    color: var(--text-muted);
-    margin-bottom: var(--space-4);
-  }
-  .offer__name { margin-bottom: var(--space-3); }
-  .offer__short {
-    color: var(--text-muted);
-    font-size: var(--text-base);
-    flex-grow: 1;
-  }
-  .offer__meta {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: var(--space-4);
-    margin-block: var(--space-6) var(--space-4);
-    padding-top: var(--space-4);
-    border-top: 1px solid var(--border-subtle);
-  }
-  .offer__price {
-    font-size: var(--text-lg);
-    font-weight: var(--weight-semibold);
-    color: var(--text-strong);
-  }
-  .offer__turnaround { font-size: var(--text-xs); color: var(--text-muted); }
-  .offer__link {
-    font-size: var(--text-base);
-    font-weight: var(--weight-medium);
-    color: var(--accent);
-  }
-  .offer:hover .offer__link { color: var(--accent-hover); text-decoration: underline; }
-
-  /* Steps */
-  .steps {
-    display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-    gap: var(--space-8);
+  .doors__list {
     list-style: none;
-    margin: var(--space-10) 0;
+    margin: 0;
     padding: 0;
   }
-  .steps__item { border-top: 2px solid var(--border-strong); padding-top: var(--space-4); }
-  .steps__num {
+  .door {
+    margin: 0;
+    border-top: 1px solid var(--border-default);
+  }
+  .door:last-child { border-bottom: 1px solid var(--border-default); }
+  .door__link {
     display: block;
-    font-size: var(--text-xs);
+    padding-block: var(--space-10);
+    text-decoration: none;
+    color: inherit;
+  }
+  .door__question {
+    display: block;
+    font-size: clamp(var(--text-xl), 4.5vw, var(--text-3xl));
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--tracking-tight);
+    line-height: var(--leading-tight);
+    color: var(--text-strong);
+    text-indent: -0.42em; /* hang the opening quote so the questions align */
+    margin-bottom: var(--space-4);
+    transition: color var(--duration-normal) var(--ease-out);
+  }
+  .door__body {
+    display: block;
+    max-width: 62ch;
     color: var(--text-muted);
-    margin-bottom: var(--space-3);
   }
-  .steps__item h3 { font-size: var(--text-md); margin-bottom: var(--space-2); }
-  .steps__item p { font-size: var(--text-base); color: var(--text-muted); }
+  .door__link:hover .door__question { color: var(--accent); }
+  .door__link:focus-visible { box-shadow: none; }
+  .door__link:focus-visible .door__question { color: var(--accent); }
 
-  /* About teaser */
-  .about-teaser {
-    display: grid;
-    grid-template-columns: 280px minmax(0, 1fr);
-    gap: var(--space-16);
-    align-items: center;
+  .writing {
+    padding-block: var(--space-8);
   }
-  .about-teaser__portrait {
-    aspect-ratio: 4 / 5;
-    border: 1px solid var(--border-default);
-    border-radius: var(--radius-lg);
-    background: var(--surface-warm-2);
-    display: grid;
-    place-items: center;
-    color: var(--text-subtle);
-    font-size: var(--text-xs);
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
+  .writing__list {
+    list-style: none;
+    margin: 0 0 var(--space-6);
+    padding: 0;
   }
+  .writing__item {
+    margin: 0;
+    padding-block: var(--space-5);
+  }
+  .writing__item + .writing__item { border-top: 1px solid var(--border-subtle); }
+  .writing__title {
+    font-size: var(--text-lg);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-tight);
+    text-decoration: none;
+  }
+  .writing__title:hover { color: var(--accent); }
+  .writing__standfirst {
+    margin: var(--space-2) 0 0;
+    color: var(--text-muted);
+    font-size: var(--text-base);
+  }
+  .writing__more { font-size: var(--text-base); }
 
-  /* CTA */
-  .cta { max-width: 640px; }
-  .cta .btn { margin-top: var(--space-4); }
-
-  @media (max-width: 960px) {
-    .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .offers { grid-template-columns: 1fr; }
-    .why { grid-template-columns: 1fr; gap: var(--space-10); }
-    .about-teaser { grid-template-columns: 1fr; gap: var(--space-8); }
-    .about-teaser__portrait { max-width: 280px; }
+  .close {
+    padding-block: var(--space-16) var(--space-8);
   }
-  @media (max-width: 560px) {
-    .steps { grid-template-columns: 1fr; }
-    .rag__row { grid-template-columns: 120px 100px minmax(220px, 1fr); gap: var(--space-4); }
+  .close p {
+    font-size: var(--text-md);
+    margin-bottom: var(--space-6);
   }
 </style>
