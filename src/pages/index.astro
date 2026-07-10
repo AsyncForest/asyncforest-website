@@ -11,22 +11,22 @@ const essays = (await getCollection('essays', ({ data }) => !data.draft))
 
 const doors = [
   {
-    question: '“Is it sound?”',
+    question: 'Is it sound?',
     href: '/work/#assurance',
     body:
-      'Independent review of a system, codebase, or AI integration — a scope-limited written report with prioritised findings and a clear conclusion. For investors, boards, and anyone who needs verification rather than reassurance.',
+      'Technical due diligence and portfolio reviews, architecture and technology decision review, technology strategy audit. For investors and founders.',
   },
   {
-    question: '“What should we do?”',
+    question: 'What should we do?',
     href: '/work/#sprints',
     body:
-      'A time-boxed advisory sprint built around one decision: GenAI architecture, build-vs-buy, scale readiness, pre-raise technical narrative. Options, trade-offs, and a written recommendation with reasons.',
+      'GenAI architecture, build-vs-buy, scale readiness, technical narratives. Best practices for production ML and GenAI are still emerging and volatile; I\'ll help you de-risk your approach.',
   },
   {
-    question: '“Keep us honest.”',
+    question: 'Keep us going',
     href: '/work/#counsel',
     body:
-      'Ongoing counsel for teams putting AI into production — a standing session, written answers to hard questions, an independent voice before the board meeting.',
+      'The AI era changes fast enough that long-term decisions can feel impossible. I\'ll help you build durable, de-risked stability into your AI strategy and architecture.',
   },
 ];
 ---
@@ -144,7 +144,6 @@ const doors = [
     letter-spacing: var(--tracking-tight);
     line-height: var(--leading-tight);
     color: var(--text-strong);
-    text-indent: -0.42em; /* hang the opening quote so the questions align */
     margin-bottom: var(--space-4);
     transition: color var(--duration-normal) var(--ease-out);
   }

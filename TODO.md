@@ -15,12 +15,6 @@ fails if a file containing a slot token is missing from this list.
 - `src/components/SiteFooter.astro:14` — `[LINKEDIN SLOT]` — LinkedIn profile URL (href is currently a placeholder and broken by design).
 - `src/pages/contact.astro:3,21` — `[EMAIL SLOT]` — same address as the footer; update `EMAIL` const and visible link text.
 
-## Pricing (Work with me)
-
-- `src/pages/work.astro:32` — `[PRICE SLOT — assurance]` — "from" price for assurance & due diligence.
-- `src/pages/work.astro:45` — `[PRICE SLOT — sprint]` — "from" price for advisory sprints.
-- `src/pages/work.astro:57` — `[PRICE SLOT — counsel]` — monthly "from" price for ongoing counsel.
-
 ## About
 
 - `src/pages/about.astro:13` — `[THESIS SLOT — being written]` — 2–3 sentence through-line paragraph; a factual interim paragraph is in place beneath the marker.
