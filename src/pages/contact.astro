@@ -1,187 +1,56 @@
 ---
 import Base from '../layouts/Base.astro';
-// TODO(henry): replace FORM_ENDPOINT with a real Formspree (or similar) endpoint
-// before launch. Until then the form falls back to a plain email, honestly.
-const FORM_ENDPOINT = 'https://formspree.io/f/REPLACE_ME';
-const EMAIL = 'henry@asyncforest.co.uk'; // TODO(henry): confirm address
+// [EMAIL SLOT] — confirm the address on the asyncforest domain, then update
+// here and in SiteFooter.astro.
+const EMAIL = 'henry@asyncforest.co.uk';
+const SUBJECT = encodeURIComponent("The decision I'm facing");
 ---
 
 <Base
-  title="Contact — Async Forest Advisory"
-  description="Start a conversation about a technical or AI audit. Describe the system and the decision it's blocking; get a scope, price, and date — usually within one working day."
+  title="Contact — Async Forest"
+  description="Tell me about the decision you're facing — a few sentences is plenty. I reply to everything within two working days."
 >
-  <section class="section">
-    <div class="container contact">
-      <div class="contact__intro">
-        <span class="eyebrow">Contact</span>
-        <h1>Tell me what needs checking</h1>
-        <p class="lede">
-          Two paragraphs is plenty: what the system is, roughly how big, and
-          the decision this review would unblock — a raise, an acquisition, a
-          launch.
-        </p>
-        <p>
-          You'll get a straight answer on scope, price, and dates, usually
-          within one working day. If I'm not the right reviewer, I'll say so
-          and point you somewhere better.
-        </p>
-        <div class="contact__direct">
-          <span class="callout__label">Prefer plain email?</span>
-          <a href={`mailto:${EMAIL}`} class="contact__email">{EMAIL}</a>
-        </div>
-      </div>
-
-      <form class="card contact__form" id="contact-form" action={FORM_ENDPOINT} method="POST" novalidate>
-        <div class="field" data-field="name">
-          <label class="field__label" for="name">Your name</label>
-          <input id="name" name="name" type="text" autocomplete="name" required />
-          <p class="field__error" id="name-error">Add your name so I know who to reply to.</p>
-        </div>
-
-        <div class="field" data-field="email">
-          <label class="field__label" for="email">Email</label>
-          <input id="email" name="email" type="email" autocomplete="email" required />
-          <p class="field__error" id="email-error">That email doesn't look complete — check for a typo.</p>
-        </div>
-
-        <div class="field" data-field="message">
-          <label class="field__label" for="message">What needs checking</label>
-          <textarea id="message" name="message" rows="6" required></textarea>
-          <p class="field__hint">
-            Stack, rough codebase size, and the decision it's blocking. Don't
-            share anything confidential yet — an NDA comes before any access.
-          </p>
-          <p class="field__error" id="message-error">A sentence or two here helps me give you a useful first reply.</p>
-        </div>
-
-        <button type="submit" class="btn btn--primary" id="submit-btn">Send this and get a reply</button>
-
-        <div class="form-status form-status--success" id="form-success" hidden>
-          <strong>Sent.</strong> I'll reply from {EMAIL}, usually within one
-          working day. If it's urgent, say so in a follow-up email and I'll
-          triage accordingly.
-        </div>
-        <div class="form-status form-status--error" id="form-error" hidden>
-          <strong>That didn't send.</strong> Not your fault — the form service
-          didn't respond. Email me directly at
-          <a href={`mailto:${EMAIL}`}>{EMAIL}</a> and you'll get the same reply.
-        </div>
-      </form>
-    </div>
-  </section>
-
-  <section class="section section--warm">
-    <div class="container container--narrow">
-      <h2>What happens after you write</h2>
-      <ol class="after">
-        <li><strong>You get a real reply</strong> — from me, not a scheduler link or an autoresponder sequence.</li>
-        <li><strong>We fix scope and price in writing</strong> — a one-page statement of work with an itemised scope and limitation of liability.</li>
-        <li><strong>The review starts on the agreed date</strong> — and the report lands on the agreed date. That's the whole funnel.</li>
-      </ol>
-    </div>
+  <section class="contact container container--narrow">
+    <h1>Contact</h1>
+    <p class="contact__lede">
+      The fastest way to start is to tell me about the decision you're facing —
+      a few sentences is plenty.
+    </p>
+    <p class="contact__email">
+      <a href={`mailto:${EMAIL}?subject=${SUBJECT}`}>
+        [EMAIL SLOT — address on asyncforest.co.uk]
+      </a>
+      <span class="contact__subject mono">suggested subject: "The decision I'm facing"</span>
+    </p>
+    <p class="contact__expectation">I reply to everything within two working days.</p>
   </section>
 </Base>
 
-<script>
-  const form = document.getElementById('contact-form') as HTMLFormElement;
-  const success = document.getElementById('form-success')!;
-  const failure = document.getElementById('form-error')!;
-  const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement;
-
-  const validators: Record<string, (v: string) => boolean> = {
-    name: (v) => v.trim().length > 0,
-    email: (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()),
-    message: (v) => v.trim().length >= 10,
-  };
-
-  function validateField(name: string): boolean {
-    const wrapper = form.querySelector(`[data-field="${name}"]`)!;
-    const input = wrapper.querySelector('input, textarea') as HTMLInputElement;
-    const ok = validators[name](input.value);
-    wrapper.classList.toggle('is-invalid', !ok);
-    input.setAttribute('aria-invalid', String(!ok));
-    return ok;
-  }
-
-  for (const name of Object.keys(validators)) {
-    const wrapper = form.querySelector(`[data-field="${name}"]`)!;
-    const input = wrapper.querySelector('input, textarea')!;
-    input.addEventListener('blur', () => validateField(name));
-    input.addEventListener('input', () => {
-      if (wrapper.classList.contains('is-invalid')) validateField(name);
-    });
-  }
-
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    success.hidden = true;
-    failure.hidden = true;
-
-    const allValid = Object.keys(validators)
-      .map((n) => validateField(n))
-      .every(Boolean);
-    if (!allValid) {
-      (form.querySelector('.is-invalid input, .is-invalid textarea') as HTMLElement)?.focus();
-      return;
-    }
-
-    submitBtn.disabled = true;
-    submitBtn.textContent = 'Sending…';
-    try {
-      const res = await fetch(form.action, {
-        method: 'POST',
-        body: new FormData(form),
-        headers: { Accept: 'application/json' },
-      });
-      if (!res.ok) throw new Error(`form endpoint returned ${res.status}`);
-      form.reset();
-      success.hidden = false;
-    } catch {
-      failure.hidden = false;
-    } finally {
-      submitBtn.disabled = false;
-      submitBtn.textContent = 'Send this and get a reply';
-    }
-  });
-</script>
-
 <style>
   .contact {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
-    gap: var(--space-16);
-    align-items: start;
+    padding-block: var(--section-y);
+    min-height: 50vh;
   }
-  .contact__direct {
-    margin-top: var(--space-10);
-    padding-top: var(--space-6);
-    border-top: 1px solid var(--border-default);
+  .contact__lede {
+    font-size: var(--text-md);
+    max-width: 58ch;
+    margin-bottom: var(--space-10);
   }
   .contact__email {
-    font-family: var(--font-mono);
-    font-size: var(--text-md);
+    margin-bottom: var(--space-10);
   }
-  .contact__form .btn { width: 100%; justify-content: center; }
-  .form-status {
-    margin-top: var(--space-6);
-    padding: var(--space-4) var(--space-5);
-    border-radius: var(--radius-md);
-    font-size: var(--text-base);
-    border: 1px solid var(--border-default);
+  .contact__email a {
+    font-size: var(--text-lg);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-tight);
   }
-  .form-status--success {
-    border-color: var(--success);
-    background: var(--success-soft);
-    color: var(--text-body);
+  .contact__subject {
+    display: block;
+    margin-top: var(--space-3);
+    font-size: var(--text-xs);
+    color: var(--text-muted);
   }
-  .form-status--error {
-    border-color: var(--danger);
-    background: var(--danger-soft);
-    color: var(--text-body);
-  }
-  .after { padding-left: 1.2em; }
-  .after li { margin-bottom: var(--space-4); }
-  @media (max-width: 860px) {
-    .contact { grid-template-columns: 1fr; gap: var(--space-10); }
+  .contact__expectation {
+    color: var(--text-muted);
   }
 </style>
