@@ -1,0 +1,116 @@
+/* ==========================================================================
+   Async Forest Advisory — Color tokens (MONOCHROME)
+   Neutrals: supplied cool-crisp gray scale (kept verbatim) — these do the work.
+   Brand   : ink (near-black gray-900/950) for actions, links, dark blocks.
+   Accent  : one deep blue kept ONLY as a rare, opt-in emphasis (not default UI).
+   Status  : functional hues only (success/warning/danger/info).
+   ========================================================================== */
+:root {
+  /* --- Neutral scale (supplied) ------------------------------------------ */
+  --gray-50:  #f9fbff;
+  --gray-100: #f4f6fb;
+  --gray-200: #edf0f7;
+  --gray-300: #e3e7f0;
+  --gray-400: #d5dae5;
+  --gray-500: #acb2bd;
+  --gray-600: #80858f;
+  --gray-700: #52565e;
+  --gray-800: #2c2f35;
+  --gray-900: #14161a;
+  --gray-950: #060709;
+
+  /* --- Forest (retained as functional 'success' green only) ------------- */
+  --forest-50:  #eef4f1;
+  --forest-100: #d6e6de;
+  --forest-200: #aecdbf;
+  --forest-300: #80b09c;
+  --forest-400: #54917b;
+  --forest-500: #347460;
+  --forest-600: #275c4b;
+  --forest-700: #1f4a3c;
+  --forest-800: #163a2f;
+  --forest-900: #102820;
+
+  /* --- Amber (rare opt-in accent) ---------------------------------------- */
+  --amber-50:  #fdf6ea;
+  --amber-100: #f9e7c6;
+  --amber-200: #f2cd8d;
+  --amber-300: #eab254;
+  --amber-400: #e19b3f;
+  --amber-500: #c87f28;
+  --amber-600: #a2641d;
+  --amber-700: #7c4c17;
+
+  /* --- Warm surfaces (retained; brand default is neutral gray) ----------- */
+  --cream:      #faf6ef;   /* warm off-white — alternating sections          */
+  --cream-deep: #f3ece0;   /* slightly deeper warm surface                   */
+  --sand:       #ece3d4;   /* warm hairline / warm border on cream           */
+
+  /* --- Functional hues ---------------------------------------------------- */
+  --red-50:   #fbeeeb;
+  --red-500:  #c0442e;
+  --red-600:  #9f3221;
+  --blue-50:  #eef2fb;
+  --blue-500: #35608f;
+  --blue-600: #274b72;
+
+  /* =========================================================================
+     Semantic aliases — reference these in components, not the raw scales.
+     ========================================================================= */
+
+  /* Text */
+  --text-strong:   var(--gray-900);   /* headings, high-emphasis            */
+  --text-body:     var(--gray-800);   /* default body copy                  */
+  --text-muted:    var(--gray-600);   /* secondary / supporting             */
+  --text-subtle:   var(--gray-500);   /* captions, meta, disabled-ish       */
+  --text-on-dark:  var(--gray-50);    /* text on forest / dark surfaces     */
+  --text-on-accent:#ffffff;           /* text on the deep-blue accent        */
+  --text-brand:    var(--gray-900);   /* brand text = ink                   */
+  --text-link:     var(--gray-900);
+  --text-link-hover: var(--gray-600);
+
+  /* Surfaces */
+  --surface-page:   var(--gray-50);   /* app / page background              */
+  --surface-card:   #ffffff;          /* cards, panels                      */
+  --surface-warm:   var(--gray-100);  /* neutral alternating section        */
+  --surface-warm-2: var(--gray-200);
+  --surface-sunken: var(--gray-100);  /* wells, insets                      */
+  --surface-dark:   var(--gray-950);  /* dark hero / footer (ink)           */
+  --surface-brand:  var(--gray-900);  /* brand-filled blocks                */
+
+  /* Borders / lines */
+  --border-subtle: var(--gray-200);   /* hairlines on white                 */
+  --border-default:var(--gray-300);   /* default component border           */
+  --border-strong: var(--gray-400);   /* emphasized / hover border          */
+  --border-warm:   var(--gray-200);   /* hairline on neutral warm surfaces  */
+  --border-brand:  var(--gray-800);
+
+  /* Brand actions — monochrome ink */
+  --brand:            var(--gray-900);
+  --brand-hover:      var(--gray-950);
+  --brand-active:     #000000;
+  --brand-soft:       var(--gray-100);
+  --brand-soft-hover: var(--gray-200);
+
+  /* Accent — deep blue. Kept for RARE, opt-in emphasis only (a single
+     underline, an accent tone). The brand is monochrome by default; this is
+     the one chromatic action colour. Desaturated to sit with the cool grays. */
+  --accent:        #234a8f;
+  --accent-hover:  #1b3c76;
+  --accent-active: #142c58;
+  --accent-soft:   var(--blue-50);
+  --accent-border: #cdd9ee;
+
+  /* Focus ring */
+  --ring: var(--gray-600);
+
+  /* Status (functional colour only — not brand) */
+  --success:      var(--forest-600);
+  --success-soft: var(--forest-50);
+  --warning:      var(--amber-500);
+  --warning-soft: var(--amber-50);
+  --danger:       var(--red-500);
+  --danger-soft:  var(--red-50);
+  --info:         var(--blue-500);
+  --info-soft:    var(--blue-50);
+}

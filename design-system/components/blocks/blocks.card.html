@@ -1,0 +1,45 @@
+<!-- @dsCard group="Components" viewport="700x360" name="Blocks (tactile)" subtitle="Hard offset-shadow blocks — adapted from blocks.css (@thesephist, MIT)" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../styles.css">
+<style>
+  body { margin: 0; background: var(--surface-page); font-family: var(--font-sans); color: var(--text-body); }
+  .wrap { padding: 34px 36px; }
+  .lbl { font-family: var(--font-mono); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--text-subtle); margin: 0 0 16px; }
+  .row { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; margin-bottom: 30px; }
+  .dark { background: var(--surface-dark); border-radius: var(--radius-lg); padding: 24px 26px; }
+  button.block, a.block { font-family: var(--font-sans); }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <p class="lbl">Variants — hover &amp; click to feel the press</p>
+    <div class="row">
+      <button class="block">Read a sample</button>
+      <button class="block accent">Start a conversation</button>
+      <button class="block round">Rounded</button>
+      <button class="block accent round">Book a call</button>
+      <span class="block fixed">PI insured</span>
+    </div>
+
+    <p class="lbl">Inline chips</p>
+    <div class="row">
+      <span class="block inline">AWS</span>
+      <span class="block inline">Concurrency</span>
+      <span class="block inline accent">AI in production</span>
+      <span class="block inline">GDPR</span>
+    </div>
+
+    <p class="lbl">On a dark surface (.block-on-dark)</p>
+    <div class="dark block-on-dark">
+      <div class="row" style="margin-bottom:0">
+        <button class="block">Secondary</button>
+        <button class="block accent">Primary</button>
+        <button class="block round accent">Get in touch</button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

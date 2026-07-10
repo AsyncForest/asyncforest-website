@@ -1,0 +1,25 @@
+<!-- @dsCard group="Spacing" viewport="700x170" name="Radii" subtitle="Soft but crisp — never sharp, never over-rounded" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  body { margin: 0; background: var(--surface-card); padding: 22px 32px; }
+  .row { display: flex; gap: 16px; align-items: flex-end; }
+  .sw { text-align: center; }
+  .box { width: 72px; height: 56px; background: var(--gray-100); border: 1.5px solid var(--gray-700); }
+  .lab { font-family: var(--font-mono); font-size: 10px; color: var(--text-muted); margin-top: 8px; }
+</style>
+</head>
+<body>
+  <div class="row">
+    <div class="sw"><div class="box" style="border-radius:var(--radius-sm)"></div><div class="lab">sm 6</div></div>
+    <div class="sw"><div class="box" style="border-radius:var(--radius-md)"></div><div class="lab">md 10</div></div>
+    <div class="sw"><div class="box" style="border-radius:var(--radius-lg)"></div><div class="lab">lg 14</div></div>
+    <div class="sw"><div class="box" style="border-radius:var(--radius-xl)"></div><div class="lab">xl 20</div></div>
+    <div class="sw"><div class="box" style="border-radius:var(--radius-2xl)"></div><div class="lab">2xl 28</div></div>
+    <div class="sw"><div class="box" style="border-radius:var(--radius-full)"></div><div class="lab">full</div></div>
+  </div>
+</body>
+</html>

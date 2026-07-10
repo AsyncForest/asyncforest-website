@@ -1,0 +1,151 @@
+---
+import Base from '../../layouts/Base.astro';
+import { services } from '../../data/services';
+
+export function getStaticPaths() {
+  return services.map((s) => ({ params: { slug: s.slug }, props: { service: s } }));
+}
+
+const { service: s } = Astro.props;
+---
+
+<Base
+  title={`${s.name} — Async Forest Advisory`}
+  description={s.short}
+>
+  <article>
+    <section class="section head">
+      <div class="container container--narrow">
+        <span class="eyebrow">{s.eyebrow}</span>
+        <h1>{s.name}</h1>
+        <p class="lede">{s.short}</p>
+        <div class="head__facts">
+          <div class="fact">
+            <span class="fact__label mono">Price</span>
+            <span class="fact__value">{s.price}</span>
+          </div>
+          <div class="fact">
+            <span class="fact__label mono">Turnaround</span>
+            <span class="fact__value">{s.turnaround}</span>
+          </div>
+          <div class="fact">
+            <span class="fact__label mono">Deliverable</span>
+            <span class="fact__value">Written report + debrief</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--warm">
+      <div class="container container--narrow">
+        <h2>What this is</h2>
+        <p>{s.intro}</p>
+
+        <h2 class="gap-top">Who it's for</h2>
+        <ul>
+          {s.forWho.map((w) => <li>{w}</li>)}
+        </ul>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container container--narrow">
+        <h2>What you get</h2>
+        <ul class="deliverables">
+          {s.deliverables.map((d) => (
+            <li class="deliverables__item">{d}</li>
+          ))}
+        </ul>
+
+        <div class="callout callout--boundary gap-top">
+          <span class="callout__label">Explicitly out of scope</span>
+          <ul class="out-list">
+            {s.outOfScope.map((o) => <li>{o}</li>)}
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--warm">
+      <div class="container container--narrow">
+        <h2>Common questions</h2>
+        <dl class="faq">
+          {s.faq.map((f) => (
+            <div class="faq__item">
+              <dt>{f.q}</dt>
+              <dd>{f.a}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+    </section>
+
+    <section class="section section--dark">
+      <div class="container container--narrow">
+        <span class="eyebrow">Next step</span>
+        <h2>Get a scope and a date</h2>
+        <p>
+          Send a few lines about the system — stack, rough size, and the
+          decision this review would unblock. You'll get a confirmed price and
+          start date, usually within one working day.
+        </p>
+        <a href="/contact/" class="btn btn--on-dark">Request this review</a>
+      </div>
+    </section>
+  </article>
+</Base>
+
+<style>
+  .head h1 { margin-bottom: var(--space-5); }
+  .head__facts {
+    display: flex;
+    gap: var(--space-12);
+    flex-wrap: wrap;
+    margin-top: var(--space-10);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--border-default);
+  }
+  .fact { display: flex; flex-direction: column; gap: var(--space-1); }
+  .fact__label {
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .fact__value {
+    font-size: var(--text-lg);
+    font-weight: var(--weight-semibold);
+    color: var(--text-strong);
+  }
+  .gap-top { margin-top: var(--space-12); }
+  .deliverables {
+    list-style: none;
+    padding: 0;
+    margin: var(--space-6) 0 0;
+  }
+  .deliverables__item {
+    padding: var(--space-4) 0 var(--space-4) var(--space-8);
+    border-bottom: 1px solid var(--border-subtle);
+    position: relative;
+  }
+  .deliverables__item::before {
+    content: '';
+    position: absolute;
+    left: var(--space-2);
+    top: 1.35em;
+    width: 14px;
+    height: 2px;
+    background: var(--gray-500);
+  }
+  .out-list { margin: 0; padding-left: 1.1em; }
+  .out-list li { margin-bottom: var(--space-2); }
+  .faq { margin: var(--space-8) 0 0; }
+  .faq__item { padding-block: var(--space-6); border-top: 1px solid var(--border-default); }
+  .faq__item dt {
+    font-weight: var(--weight-semibold);
+    color: var(--text-strong);
+    margin-bottom: var(--space-3);
+  }
+  .faq__item dd { margin: 0; color: var(--text-muted); max-width: var(--container-prose); }
+  .section--dark .btn { margin-top: var(--space-4); }
+</style>

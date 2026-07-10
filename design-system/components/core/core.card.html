@@ -1,0 +1,107 @@
+<!-- @dsCard group="Components" viewport="700x760" name="Core primitives" subtitle="Buttons, forms, cards, badges, callouts" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/lucide@0.454.0/dist/umd/lucide.min.js"></script>
+<script src="../../_ds_bundle.js"></script>
+<style>
+  body { margin: 0; background: var(--surface-page); font-family: var(--font-sans); color: var(--text-body); }
+  #root { padding: 28px 32px; }
+  .grp { margin-bottom: 26px; }
+  .lbl { font-family: var(--font-mono); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--text-subtle); margin-bottom: 12px; }
+  .rowf { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+  const { Button, IconButton, Input, Textarea, Select, Checkbox, Field, Badge, Tag, Card, Eyebrow, Callout } = window.AsyncForestDesignSystem_6656fd;
+  const Ico = ({ n, s = 16 }) => {
+    const ref = React.useRef();
+    React.useEffect(() => { if (ref.current) { ref.current.innerHTML = ''; const el = document.createElement('i'); el.setAttribute('data-lucide', n); ref.current.appendChild(el); window.lucide && window.lucide.createIcons({ attrs: { width: s, height: s, 'stroke-width': 1.75 } }); } });
+    return <span ref={ref} style={{ display: 'inline-flex' }} />;
+  };
+  function Demo() {
+    const [chk, setChk] = React.useState(true);
+    return (
+      <div>
+        <div className="grp">
+          <div className="lbl">Buttons</div>
+          <div className="rowf">
+            <Button variant="primary">Start a conversation</Button>
+            <Button variant="secondary" iconRight={<Ico n="arrow-right" />}>See how it works</Button>
+            <Button variant="ghost">Read a sample</Button>
+            <Button variant="subtle">Subtle</Button>
+            <Button variant="accent">Accent</Button>
+            <Button variant="primary" disabled>Disabled</Button>
+          </div>
+          <div className="rowf" style={{ marginTop: 12 }}>
+            <Button size="sm" variant="secondary">Small</Button>
+            <Button size="md" variant="secondary">Medium</Button>
+            <Button size="lg" variant="secondary">Large</Button>
+            <IconButton label="Menu" variant="secondary"><Ico n="menu" s={20} /></IconButton>
+            <IconButton label="Close" variant="ghost"><Ico n="x" s={20} /></IconButton>
+            <IconButton label="Go" variant="primary"><Ico n="arrow-up-right" s={20} /></IconButton>
+          </div>
+        </div>
+
+        <div className="grp">
+          <div className="lbl">Badges &amp; tags</div>
+          <div className="rowf">
+            <Badge tone="brand">Assurance</Badge>
+            <Badge tone="success">Verified</Badge>
+            <Badge tone="warning">Needs review</Badge>
+            <Badge tone="danger">Priority 1</Badge>
+            <Badge tone="info">Note</Badge>
+            <Tag selected>Architecture</Tag>
+            <Tag>AWS</Tag>
+            <Tag onRemove={() => {}}>Removable</Tag>
+          </div>
+        </div>
+
+        <div className="grp">
+          <div className="lbl">Form controls</div>
+          <div className="cols">
+            <Field label="Work email" hint="I'll only use this to reply." htmlFor="e"><Input id="e" type="email" placeholder="you@company.com" /></Field>
+            <Field label="Engagement type"><Select defaultValue="a"><option value="a">Technical assurance review</option><option value="b">Architecture review</option></Select></Field>
+          </div>
+          <div style={{ marginTop: 16 }}>
+            <Field label="What would you like reviewed?"><Textarea rows={3} placeholder="A few sentences on the system and your concern." /></Field>
+          </div>
+          <div style={{ marginTop: 14 }}>
+            <Checkbox id="c" checked={chk} onChange={e => setChk(e.target.checked)} label="This engagement may be covered by an NDA." />
+          </div>
+        </div>
+
+        <div className="grp">
+          <div className="lbl">Cards &amp; callouts</div>
+          <div className="cols">
+            <Card>
+              <Eyebrow tick>Security audit</Eyebrow>
+              <h3 style={{ fontFamily: 'var(--font-sans)', fontWeight: 500, fontSize: 22, margin: '8px 0 6px', color: 'var(--text-strong)' }}>Point-in-time review</h3>
+              <p style={{ margin: 0, fontSize: 14, lineHeight: 1.6, color: 'var(--text-muted)' }}>Scope-limited findings with prioritised, actionable fixes.</p>
+            </Card>
+            <Card interactive tone="warm">
+              <Eyebrow color="var(--gray-700)">Emerging</Eyebrow>
+              <h3 style={{ fontFamily: 'var(--font-sans)', fontWeight: 500, fontSize: 22, margin: '8px 0 6px', color: 'var(--text-strong)' }}>AI in production</h3>
+              <p style={{ margin: 0, fontSize: 14, lineHeight: 1.6, color: 'var(--text-muted)' }}>Concurrency, resilience, and cost under real load.</p>
+            </Card>
+          </div>
+          <div style={{ marginTop: 16, display: 'flex', flexDirection: 'column', gap: 12 }}>
+            <Callout tone="note" title="Observation">Retries are unbounded on the payment path — a single downstream stall can amplify load.</Callout>
+            <Callout tone="risk" title="Priority 1">No idempotency key on the charge endpoint; a client retry can double-charge.</Callout>
+          </div>
+        </div>
+      </div>
+    );
+  }
+  ReactDOM.createRoot(document.getElementById('root')).render(<Demo />);
+</script>
+</body>
+</html>

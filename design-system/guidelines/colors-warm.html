@@ -1,0 +1,25 @@
+<!-- @dsCard group="Colors" viewport="700x160" name="Surfaces" subtitle="Neutral surfaces — page, card, sunken, dark (ink)" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  body { margin: 0; font-family: var(--font-mono); background: var(--surface-card); }
+  .row { display: flex; padding: 20px; gap: 12px; }
+  .sw { flex: 1; }
+  .chip { height: 72px; border-radius: 10px; border: 1px solid var(--border-default); }
+  .name { font-size: 10px; color: var(--text-strong); margin-top: 8px; }
+  .hex { font-size: 9px; color: var(--text-subtle); margin-top: 2px; }
+</style>
+</head>
+<body>
+  <div class="row">
+    <div class="sw"><div class="chip" style="background:var(--surface-page)"></div><div class="name">page</div><div class="hex">gray-50</div></div>
+    <div class="sw"><div class="chip" style="background:var(--surface-card)"></div><div class="name">card</div><div class="hex">#fff</div></div>
+    <div class="sw"><div class="chip" style="background:var(--surface-sunken)"></div><div class="name">sunken / warm</div><div class="hex">gray-100</div></div>
+    <div class="sw"><div class="chip" style="background:var(--surface-brand)"></div><div class="name">brand</div><div class="hex">gray-900</div></div>
+    <div class="sw"><div class="chip" style="background:var(--surface-dark)"></div><div class="name">dark</div><div class="hex">gray-950</div></div>
+  </div>
+</body>
+</html>

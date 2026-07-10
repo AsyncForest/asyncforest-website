@@ -1,0 +1,8 @@
+/* ==========================================================================
+   Async Forest Advisory — Webfonts
+   SELECTED substitutes (no brand fonts were supplied). See readme.md.
+   Brand is SANS-ONLY (no serif):
+   - Hanken Grotesk : humanist sans for display, body + UI (clean, friendly)
+   - JetBrains Mono : monospace for eyebrows, labels, code, technical tags
+   ========================================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');

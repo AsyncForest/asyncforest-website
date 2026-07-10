@@ -1,0 +1,67 @@
+---
+// The Async Forest mark: three stacked triangle outlines forming a fir tree.
+// Each tier is drawn with a deliberate gap in a different edge, and each apex
+// sits slightly off the axis of the tier below — layers that never quite sync.
+// Per STYLESEED.md this motif appears once per page (header/footer lockup).
+interface Props {
+  size?: number;
+  wordmark?: boolean;
+}
+const { size = 28, wordmark = true } = Astro.props;
+---
+
+<span class="logo">
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 32 34"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.75"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    aria-hidden="true"
+  >
+    <path d="M18.9 5.9 L16.6 2.2 L11 11 L22.2 11" />
+    <path d="M15.2 8.6 L8.2 19.5 L16.4 19.5 M19.6 19.5 L23.2 19.5 L15.2 8.6" />
+    <path d="M6.4 28.4 L26 28.4 L17 15.4 L13.8 19.3" />
+    <path d="M15.6 28.4 L15.6 31.8" />
+  </svg>
+  {wordmark && (
+    <span class="logo__text">
+      <span class="logo__name">Async Forest</span>
+      <span class="logo__descriptor">Advisory</span>
+    </span>
+  )}
+</span>
+
+<style>
+  .logo {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3);
+    color: var(--text-strong);
+  }
+  .logo__text {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-2);
+  }
+  .logo__name {
+    font-weight: var(--weight-semibold);
+    font-size: var(--text-md);
+    letter-spacing: var(--tracking-tight);
+    white-space: nowrap;
+  }
+  .logo__descriptor {
+    font-family: var(--font-mono);
+    font-size: var(--text-2xs);
+    letter-spacing: var(--tracking-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+  @media (max-width: 560px) {
+    .logo__descriptor { display: none; }
+  }
+</style>

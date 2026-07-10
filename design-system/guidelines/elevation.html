@@ -1,0 +1,27 @@
+<!-- @dsCard group="Spacing" viewport="700x200" name="Elevation" subtitle="Tactile block — solid offset shadow that presses in; not soft drop shadows" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  body { margin: 0; background: var(--surface-page); padding: 30px 32px; font-family: var(--font-sans); }
+  .row { display: flex; gap: 30px; align-items: flex-start; }
+  .sw { text-align: center; }
+  .box { width: 96px; height: 60px; background: var(--surface-card); border: 1px solid var(--border-default); border-radius: var(--radius-md); }
+  .lab { font-family: var(--font-mono); font-size: 10px; color: var(--text-muted); margin-top: 14px; line-height: 1.5; }
+  .note { font-family: var(--font-sans); font-size: 12px; color: var(--text-muted); margin-top: 26px; max-width: 62ch; line-height: 1.55; }
+  b { color: var(--text-strong); font-weight: 600; }
+</style>
+</head>
+<body>
+  <div class="row">
+    <div class="sw"><div class="box" style="box-shadow:2px 2px 0 0 var(--gray-200)"></div><div class="lab">input<br>2px · gray-200</div></div>
+    <div class="sw"><div class="box" style="box-shadow:3px 3px 0 0 var(--gray-300)"></div><div class="lab">button rest<br>3px · gray-300</div></div>
+    <div class="sw"><div class="box" style="box-shadow:1px 1px 0 0 var(--gray-300);transform:translate(2px,2px)"></div><div class="lab">button pressed<br>1px + shift</div></div>
+    <div class="sw"><div class="box" style="box-shadow:4px 4px 0 0 var(--gray-200)"></div><div class="lab">card<br>4px · gray-200</div></div>
+    <div class="sw"><div class="box" style="background:var(--gray-900);border-color:var(--gray-900);box-shadow:3px 3px 0 0 var(--gray-400)"></div><div class="lab">primary<br>3px · gray-400</div></div>
+  </div>
+  <p class="note">Elevation is a <b>solid, blur-free offset shadow</b> (adapted from blocks.css) applied consistently but subtly across buttons, cards, and inputs — raised surfaces sit on a small gray offset and <b>press into it</b> on hover/click. Structure otherwise lives in hairline borders.</p>
+</body>
+</html>

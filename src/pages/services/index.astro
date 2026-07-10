@@ -1,0 +1,105 @@
+---
+import Base from '../../layouts/Base.astro';
+import { services } from '../../data/services';
+---
+
+<Base
+  title="Services — Async Forest Advisory"
+  description="Three fixed-scope technical audits: investor-grade technical & AI due diligence, AI-in-production readiness review, and AI-built app hardening. Priced up front."
+>
+  <section class="section">
+    <div class="container">
+      <span class="eyebrow">Services</span>
+      <h1 class="page-title">Three audits, priced up front</h1>
+      <p class="lede">
+        Each is a fixed-scope, point-in-time review ending in a written report
+        with prioritised fixes. No retainers, no scope creep, no meeting series.
+      </p>
+
+      <div class="list">
+        {services.map((s, i) => (
+          <a href={`/services/${s.slug}/`} class="card row">
+            <span class="row__num mono">{String(i + 1).padStart(2, '0')}</span>
+            <div class="row__body">
+              <span class="row__eyebrow">{s.eyebrow}</span>
+              <h2 class="row__name">{s.name}</h2>
+              <p class="row__short">{s.short}</p>
+            </div>
+            <div class="row__meta">
+              <span class="row__price">{s.price}</span>
+              <span class="row__turnaround mono">{s.turnaround}</span>
+              <span class="row__link">Full scope</span>
+            </div>
+          </a>
+        ))}
+      </div>
+
+      <div class="callout callout--note note">
+        <span class="callout__label">Not sure which fits?</span>
+        <p>
+          Describe the system and the decision it's blocking —
+          <a href="/contact/">two paragraphs by email</a> is plenty — and I'll
+          tell you which review fits, or say honestly if none does.
+        </p>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .page-title { margin-bottom: var(--space-6); }
+  .list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+    margin-block: var(--space-12);
+  }
+  .row {
+    display: grid;
+    grid-template-columns: 56px minmax(0, 1fr) 200px;
+    gap: var(--space-8);
+    align-items: start;
+  }
+  .row__num {
+    font-size: var(--text-sm);
+    color: var(--text-muted);
+    padding-top: var(--space-1);
+  }
+  .row__eyebrow {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: var(--space-3);
+  }
+  .row__name { margin-bottom: var(--space-3); font-size: var(--text-xl); }
+  .row__short { color: var(--text-muted); font-size: var(--text-base); margin: 0; }
+  .row__meta {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    text-align: right;
+  }
+  .row__price {
+    font-size: var(--text-lg);
+    font-weight: var(--weight-semibold);
+    color: var(--text-strong);
+  }
+  .row__turnaround { font-size: var(--text-xs); color: var(--text-muted); }
+  .row__link {
+    margin-top: var(--space-4);
+    font-weight: var(--weight-medium);
+    color: var(--accent);
+  }
+  .row:hover .row__link { color: var(--accent-hover); text-decoration: underline; }
+  .note p { margin: 0; }
+
+  @media (max-width: 760px) {
+    .row { grid-template-columns: 1fr; gap: var(--space-4); }
+    .row__num { display: none; }
+    .row__meta { flex-direction: row; align-items: baseline; text-align: left; gap: var(--space-6); }
+    .row__link { margin-top: 0; margin-left: auto; }
+  }
+</style>

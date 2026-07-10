@@ -1,0 +1,58 @@
+<!-- @dsCard group="Brand" viewport="700x560" name="Anti-slop guardrails" subtitle="Break the default aesthetic — brand-specific rejections + biases" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  body { margin: 0; background: var(--surface-card); font-family: var(--font-sans); color: var(--text-body); }
+  .wrap { padding: 32px 36px; max-width: 720px; }
+  .kicker { font-family: var(--font-mono); font-size: var(--text-2xs); letter-spacing: var(--tracking-eyebrow); text-transform: uppercase; color: var(--text-muted); }
+  h1 { font-family: var(--font-sans); font-weight: 600; font-size: var(--text-2xl); letter-spacing: var(--tracking-tight); color: var(--text-strong); margin: 8px 0 4px; }
+  .sub { font-size: var(--text-sm); color: var(--text-muted); margin: 0 0 26px; max-width: 60ch; line-height: var(--leading-relaxed); }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 26px 40px; }
+  .col h2 { font-family: var(--font-mono); font-size: var(--text-2xs); letter-spacing: var(--tracking-eyebrow); text-transform: uppercase; margin: 0 0 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border-default); }
+  .no h2 { color: var(--danger); }
+  .yes h2 { color: var(--text-strong); }
+  ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 11px; }
+  li { display: flex; gap: 10px; font-size: var(--text-sm); line-height: var(--leading-snug); color: var(--text-body); }
+  .mark { flex: 0 0 auto; font-family: var(--font-mono); font-weight: 700; width: 14px; }
+  .no .mark { color: var(--danger); }
+  .yes .mark { color: var(--gray-900); }
+  b { color: var(--text-strong); font-weight: 600; }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="kicker">Design law</div>
+    <h1>Break the default aesthetic</h1>
+    <p class="sub">This brand is monochrome, sans, and structural by decision — not by default. These rules keep it from collapsing into generic "AI-slop". Audit every screen against them before shipping.</p>
+    <div class="grid">
+      <div class="col no">
+        <h2>Never (unless asked)</h2>
+        <ul>
+          <li><span class="mark">✕</span><span>Teal / a second accent. <b>Ink is the action colour; a single deep blue is the one rare highlight.</b></span></li>
+          <li><span class="mark">✕</span><span>Animated status dots, pulsing orbs, "live" badges. Status is static text + glyph.</span></li>
+          <li><span class="mark">✕</span><span>Container depth &gt; 2. No card-on-card — separate with a <b>hairline or tonal shift</b>.</span></li>
+          <li><span class="mark">✕</span><span>Serif headline + sans body. Inter / Roboto / Arial / system-ui as the primary face.</span></li>
+          <li><span class="mark">✕</span><span>Three-column feature grid in the hero or section 2. The "Get Started / Learn More" duo.</span></li>
+          <li><span class="mark">✕</span><span>Decorative coloured left-rules. The rule is reserved for <b>severity only</b> (Callout).</span></li>
+          <li><span class="mark">✕</span><span>Mixing icon families. Purple-pink gradients. Glass / frosted hero stacks.</span></li>
+        </ul>
+      </div>
+      <div class="col yes">
+        <h2>Prefer</h2>
+        <ul>
+          <li><span class="mark">→</span><span>One bold direction (monochrome + Hanken Grotesk) over hedged "modern minimal".</span></li>
+          <li><span class="mark">→</span><span><b>Tactile block elevation</b> (solid offset shadow, presses in) over soft drop shadows.</span></li>
+          <li><span class="mark">→</span><span>Editorial rhythm — max-width prose, vertical breathing — over uniform grids.</span></li>
+          <li><span class="mark">→</span><span>Content-first heroes (type, a report, a table) over decorative ones.</span></li>
+          <li><span class="mark">→</span><span><b>One icon family: Lucide</b>, stroke 1.75 — or type-only. Never decorative icons.</span></li>
+          <li><span class="mark">→</span><span>Verb-first, product-specific copy ("Start a conversation", not "Get started").</span></li>
+          <li><span class="mark">→</span><span>Motion that communicates state or hierarchy; otherwise none. Respect reduced-motion.</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

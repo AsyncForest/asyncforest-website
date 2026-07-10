@@ -1,0 +1,102 @@
+/* ==========================================================================
+   Blocks — tactile "block" elements.
+
+   Adapted from blocks.css by Linus Lee (@thesephist) — MIT License.
+   Source: https://github.com/thesephist/blocks.css
+
+   Retuned for Async Forest: the press mechanic is kept (a solid, blur-free
+   offset shadow the element presses into) but made SUBTLER and consistent with
+   the rest of the system — a single hairline border + an anchored solid shadow,
+   rather than the original doubled 3px outline. This is the boldest expression
+   of the system's shared tactile-block elevation (Button, Card, inputs use a
+   lighter version of the same offset shadow).
+   ========================================================================== */
+:root {
+  --block-text-color: var(--gray-900);
+  --block-background-color: #ffffff;
+  --block-accent-color: var(--accent);
+  --block-shadow-color: var(--gray-300);
+  --block-radius: 6px;
+  --block-border: 2px;
+}
+
+.block {
+  display: inline-block;
+  position: relative;
+  color: var(--block-text-color);
+  border: var(--block-border) solid var(--block-text-color);
+  border-radius: var(--block-radius);
+  padding: 8px 15px;
+  background: var(--block-background-color);
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: var(--text-sm);
+  letter-spacing: 0.005em;
+  cursor: pointer;
+  box-sizing: border-box;
+  z-index: 1;
+  margin: 0 4px 4px 0;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: transform 0.18s var(--ease-out);
+}
+
+/* Anchored solid shadow (stays put in space; the block presses onto it) */
+.block:after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border: var(--block-border) solid var(--block-text-color);
+  border-radius: var(--block-radius);
+  background: var(--block-shadow-color);
+  transform: translate(3px, 3px);
+  transition: transform 0.18s var(--ease-out);
+}
+
+.block:hover,
+.block:focus { transform: translate(2px, 2px); outline: none; }
+.block:hover:after,
+.block:focus:after { transform: translate(1px, 1px); }
+.block:active { transform: translate(3px, 3px); }
+.block:active:after { transform: translate(0, 0); }
+
+/* Non-interactive (static label) */
+.block.fixed { cursor: auto !important; }
+.block.fixed,
+.block.fixed:hover,
+.block.fixed:focus,
+.block.fixed:active { transform: none !important; }
+.block.fixed:after,
+.block.fixed:hover:after,
+.block.fixed:focus:after,
+.block.fixed:active:after { transform: translate(3px, 3px) !important; }
+
+/* Filled accent block (ink by default; set --block-accent-color to theme) */
+.block.accent { color: var(--block-background-color); background: var(--block-accent-color); border-color: var(--block-accent-color); }
+.block.accent:after { background: var(--block-accent-color); border-color: var(--block-accent-color); opacity: 0.28; }
+
+/* Small inline chip */
+.block.inline { font-size: 0.72em; font-weight: 600; padding: 2px 8px; }
+.block.inline:after { transform: translate(2px, 2px); }
+.block.inline:hover, .block.inline:focus { transform: translate(1px, 1px); }
+.block.inline:hover:after, .block.inline:focus:after { transform: translate(1px, 1px); }
+.block.inline:active { transform: translate(2px, 2px); }
+.block.inline:active:after { transform: translate(0, 0); }
+
+/* Pill */
+.block.round,
+.block.round:after { border-radius: 30px; }
+
+/* Wrapper (wrap arbitrary content in a block) */
+.block.wrapper { padding: 0; }
+.block.wrapper > * { margin: 0; }
+
+/* Dark-surface theme: add class="block-on-dark" to a container or the block */
+.block-on-dark {
+  --block-text-color: var(--gray-50);
+  --block-background-color: var(--gray-950);
+  --block-accent-color: var(--gray-50);
+  --block-shadow-color: var(--gray-700);
+}
+.block-on-dark .block.accent, .block.accent.block-on-dark { color: var(--gray-950); }

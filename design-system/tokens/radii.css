@@ -1,0 +1,13 @@
+/* ==========================================================================
+   Async Forest Advisory — Radii tokens
+   Soft but crisp. Not brutalist-sharp, not pill-heavy. Cards ~12–16px.
+   ========================================================================== */
+:root {
+  --radius-xs:   4px;
+  --radius-sm:   6px;
+  --radius-md:   10px;   /* buttons, inputs        */
+  --radius-lg:   14px;   /* cards, panels          */
+  --radius-xl:   20px;   /* large feature cards    */
+  --radius-2xl:  28px;   /* hero / media blocks    */
+  --radius-full: 999px;  /* pills, tags, avatars   */
+}

@@ -1,0 +1,25 @@
+<!-- @dsCard group="Colors" viewport="700x160" name="Status" subtitle="Success, warning, danger, info — with soft backings" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  body { margin: 0; font-family: var(--font-mono); background: var(--surface-card); }
+  .row { display: flex; padding: 20px; gap: 12px; }
+  .sw { flex: 1; }
+  .pair { display: flex; height: 72px; border-radius: 10px; overflow: hidden; border: 1px solid var(--border-subtle); }
+  .solid { flex: 1.6; }
+  .soft { flex: 1; }
+  .name { font-size: 10px; color: var(--text-strong); margin-top: 8px; }
+</style>
+</head>
+<body>
+  <div class="row">
+    <div class="sw"><div class="pair"><div class="solid" style="background:var(--success)"></div><div class="soft" style="background:var(--success-soft)"></div></div><div class="name">success</div></div>
+    <div class="sw"><div class="pair"><div class="solid" style="background:var(--warning)"></div><div class="soft" style="background:var(--warning-soft)"></div></div><div class="name">warning</div></div>
+    <div class="sw"><div class="pair"><div class="solid" style="background:var(--danger)"></div><div class="soft" style="background:var(--danger-soft)"></div></div><div class="name">danger</div></div>
+    <div class="sw"><div class="pair"><div class="solid" style="background:var(--info)"></div><div class="soft" style="background:var(--info-soft)"></div></div><div class="name">info</div></div>
+  </div>
+</body>
+</html>

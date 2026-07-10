@@ -1,0 +1,140 @@
+---
+import Base from '../layouts/Base.astro';
+
+const steps = [
+  {
+    num: '01',
+    name: 'Scope',
+    body:
+      "We fix the boundaries before anything else: which systems are in, which are out, what questions the report must answer, and the price. This goes into a one-page statement of work. If your situation doesn't fit a fixed scope — genuinely unfamiliar territory, unusual codebase — I'll say so and quote capped time-and-materials instead, with the cap in writing.",
+  },
+  {
+    num: '02',
+    name: 'Access',
+    body:
+      'You grant read-only access to repositories, documentation, and (where relevant) infrastructure dashboards, under a mutual NDA. I work from my own equipment, never push changes, and delete working copies when the engagement closes. If read-only access is genuinely impossible, we talk about alternatives before I commit to conclusions.',
+  },
+  {
+    num: '03',
+    name: 'Review',
+    body:
+      "I do the review personally — that's the product. Expect one batched set of written questions to your technical lead rather than a standing meeting. I read code and architecture the way a senior engineer joining your team would, plus the AI-specific checks most reviews skip: model and data governance, failure behaviour, cost under load, and whether AI-generated code has been verified by anyone.",
+  },
+  {
+    num: '04',
+    name: 'Report',
+    body:
+      'On the agreed date you receive the written report: a risk matrix across the agreed dimensions, findings in priority order with effort estimates, deal-breaker flags if any exist, and a two-page summary written for people who don\'t read code. Scope and method are stated inside the report, so anyone reading it later knows exactly what it does and doesn\'t claim.',
+  },
+  {
+    num: '05',
+    name: 'Debrief',
+    body:
+      "One hour, once you've read it. Walk through the findings, challenge anything that seems off, and agree what happens next. If you want help with remediation afterwards, that's a separate, clearly-scoped engagement — the report never depends on you buying more.",
+  },
+];
+---
+
+<Base
+  title="How it works — Async Forest Advisory"
+  description="How an assurance engagement runs: scope, read-only access under NDA, personal review, written report, one debrief. Fixed price agreed before anything starts."
+>
+  <section class="section">
+    <div class="container container--narrow">
+      <span class="eyebrow">How it works</span>
+      <h1>Scope first. One meeting. A report that stands on its own.</h1>
+      <p class="lede">
+        The whole process is built to need as little of your time as possible —
+        and to make the conclusion trustworthy to someone who wasn't in the
+        room.
+      </p>
+    </div>
+  </section>
+
+  <section class="section section--warm">
+    <div class="container container--narrow">
+      <ol class="process">
+        {steps.map((s) => (
+          <li class="process__step">
+            <div class="process__head">
+              <span class="process__num mono">{s.num}</span>
+              <h2>{s.name}</h2>
+            </div>
+            <p>{s.body}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container container--narrow">
+      <h2>What the report promises — and what it doesn't</h2>
+      <p>
+        Every report is <strong>point-in-time</strong>: it describes the system
+        as reviewed, on the dates stated, within the scope agreed. It is not a
+        guarantee about the future, a certification, or ongoing monitoring.
+        That's not a hedge — it's what makes the conclusions worth standing
+        behind.
+      </p>
+      <div class="callout callout--boundary">
+        <span class="callout__label">Boundaries</span>
+        <ul class="boundary-list">
+          <li>Regulatory findings are technical observations, not legal advice. Where interpretation needs a lawyer, the report says so.</li>
+          <li>This is an expert architecture and code review, not a CREST-accredited penetration test. When one is needed, I refer a CREST partner.</li>
+          <li>Every statement of work carries an itemised scope and a limitation of liability — you'll see both before signing.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--dark">
+    <div class="container container--narrow">
+      <span class="eyebrow">Next step</span>
+      <h2>Ready when you are</h2>
+      <p>
+        Pick the review that fits, or describe your situation and I'll tell you
+        which one does.
+      </p>
+      <div class="cta-row">
+        <a href="/services/" class="btn btn--on-dark">See the three audits</a>
+        <a href="/contact/" class="dark-link">or start a conversation</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .process {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-12);
+  }
+  .process__step {
+    padding-top: var(--space-6);
+    border-top: 2px solid var(--border-strong);
+  }
+  .process__head {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-4);
+    margin-bottom: var(--space-3);
+  }
+  .process__head h2 { margin: 0; }
+  .process__num { color: var(--text-muted); font-size: var(--text-sm); }
+  .boundary-list { margin: 0; padding-left: 1.1em; }
+  .boundary-list li { margin-bottom: var(--space-3); }
+  .callout { margin-top: var(--space-8); }
+  .cta-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-6);
+    flex-wrap: wrap;
+    margin-top: var(--space-6);
+  }
+  .dark-link { color: var(--gray-400); }
+  .dark-link:hover { color: var(--gray-50); }
+</style>

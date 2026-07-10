@@ -1,0 +1,42 @@
+/* ==========================================================================
+   Async Forest Advisory — Shadow & elevation tokens
+   Elevation = a solid, blur-free OFFSET block shadow (adapted from blocks.css),
+   applied consistently: raised surfaces sit on a small gray offset and press
+   into it on interaction. Borders carry structure. The soft --shadow-* tokens
+   below are legacy, kept only for rare non-tactile needs.
+   ========================================================================== */
+:root {
+  /* --- Tactile block offset shadows (the system's elevation language) ----- */
+  --shadow-offset-xs: 2px 2px 0 0 var(--gray-200);   /* inputs, badges, tags   */
+  --shadow-offset-sm: 3px 3px 0 0 var(--gray-300);   /* buttons, icon buttons  */
+  --shadow-offset-md: 4px 4px 0 0 var(--gray-200);   /* cards                  */
+  --shadow-offset-lg: 6px 6px 0 0 var(--gray-300);   /* large / hero cards     */
+  --shadow-offset-ink: 3px 3px 0 0 var(--gray-400);  /* behind ink fills       */
+  --shadow-offset-dark: 5px 5px 0 0 var(--gray-800); /* raised card on dark    */
+
+  /* Warm-neutral shadow color built from the deep gray (legacy soft set) */
+  --shadow-color: 220 14% 12%;
+
+  --shadow-xs: 0 1px 2px hsl(var(--shadow-color) / 0.06);
+  --shadow-sm: 0 1px 2px hsl(var(--shadow-color) / 0.05),
+               0 2px 6px hsl(var(--shadow-color) / 0.06);
+  --shadow-md: 0 2px 4px hsl(var(--shadow-color) / 0.05),
+               0 6px 16px hsl(var(--shadow-color) / 0.08);
+  --shadow-lg: 0 4px 8px hsl(var(--shadow-color) / 0.05),
+               0 16px 40px hsl(var(--shadow-color) / 0.12);
+  --shadow-xl: 0 8px 16px hsl(var(--shadow-color) / 0.06),
+               0 28px 64px hsl(var(--shadow-color) / 0.16);
+
+  /* Focus ring shadow */
+  --shadow-ring: 0 0 0 3px hsl(220 9% 46% / 0.30);
+
+  /* Inset well */
+  --shadow-inset: inset 0 1px 2px hsl(var(--shadow-color) / 0.06);
+
+  /* Motion — calm, confident. Fades + gentle ease, no bounce. */
+  --ease-out:   cubic-bezier(0.22, 1, 0.36, 1);   /* @kind other */
+  --ease-in-out:cubic-bezier(0.65, 0, 0.35, 1);   /* @kind other */
+  --duration-fast:   120ms;   /* @kind other */
+  --duration-normal: 200ms;   /* @kind other */
+  --duration-slow:   360ms;   /* @kind other */
+}

@@ -1,0 +1,137 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base
+  title="About Dr Henry Franks — Async Forest Advisory"
+  description="Async Forest Advisory is Dr Henry Franks: Warwick PhD on trust in multi-agent systems, startup CTO and chief architect for over a decade, responsible-AI lecturer at KCL and Notre Dame."
+>
+  <section class="section">
+    <div class="container about">
+      <div>
+        <span class="eyebrow">About</span>
+        <h1>The practice is one person. That's the point.</h1>
+        <p class="lede">
+          When you commission a report from Async Forest, you know exactly who
+          read your code, whose judgement you're paying for, and who is
+          answerable if the conclusion is wrong.
+        </p>
+      </div>
+      <div class="about__portrait" aria-hidden="true">
+        <span class="mono">Photo to follow</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--warm">
+    <div class="container container--narrow">
+      <h2>Dr Henry Franks</h2>
+      <p>
+        I've spent my career on one question from two directions: <strong>how do
+        you trust a system you didn't build and don't control?</strong>
+      </p>
+      <p>
+        The academic direction first. My PhD at Warwick was on trust,
+        reputation, and cooperation in open multi-agent systems — how
+        independent, self-interested software agents can verify each other's
+        behaviour when there's no central authority to appeal to. That work was
+        published in the field's main journal and conference (AAMAS), and it
+        turned out to be a strangely good apprenticeship for the current
+        moment, when everyone's stack is filling up with autonomous systems
+        nobody fully controls.
+      </p>
+      <p>
+        Then the practical direction: a decade and a half building the systems
+        themselves. Founder and CTO of a London SaaS startup; data science and
+        engineering in regulated insurance at Howden's technology arm; chief
+        software officer at a US energy-tech startup; and since 2022, CTO and
+        now Chief Architect at Climate Policy Radar, where we build open AI
+        tools used for climate law and policy research worldwide. I've shipped
+        machine learning to production in domains where being wrong is
+        expensive, and I've been the person accountable when it broke.
+      </p>
+      <p>
+        Alongside that, I lecture annually on responsible AI — the social,
+        ethical, and legal side — at King's College London and the University
+        of Notre Dame, and I've spoken on AI and climate at venues from COP to
+        CIO summits.
+      </p>
+      <h3 class="record__heading">The short version</h3>
+      <ul class="record">
+        <li><strong>PhD, University of Warwick</strong> — trust and cooperation in open multi-agent systems; published in AAMAS and <em>Autonomous Agents and Multi-Agent Systems</em></li>
+        <li><strong>Chief Architect, Climate Policy Radar</strong> — previously its CTO; AI systems for climate law and policy, used globally</li>
+        <li><strong>15+ years in startups</strong> — founder/CTO, chief software officer, principal engineer, data scientist, across SaaS, insurance, and energy</li>
+        <li><strong>Guest lecturer on responsible AI</strong> — King's College London and University of Notre Dame, annually</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container container--narrow">
+      <h2>Why independent assurance</h2>
+      <p>
+        Software teams have always marked their own homework; AI made the
+        homework bigger and the marking automatic. Codebases are now part-written
+        by tools with well-measured blind spots, demos are indistinguishable
+        from products, and the person telling you "it's fine" is usually the
+        person who built it — or a model summarising the model.
+      </p>
+      <p>
+        The old answer to this problem still works: an independent expert with
+        the right background reads the actual system and signs their name to a
+        conclusion. My academic work was about making trust checkable in
+        systems of autonomous agents. This practice is the same idea, applied
+        commercially, one codebase at a time.
+      </p>
+      <p>
+        I run it solo and deliberately small: fixed scopes, written
+        deliverables, few meetings. You get depth and a straight answer; I get
+        to do the kind of focused technical work I'm best at. Nobody gets a
+        junior analyst with a checklist.
+      </p>
+    </div>
+  </section>
+
+  <section class="section section--dark">
+    <div class="container container--narrow">
+      <span class="eyebrow">Next step</span>
+      <h2>See if the fit is right</h2>
+      <p>
+        Read the <a href="/services/" class="dark-link">three audits</a>, or
+        just describe what you need checked and I'll answer plainly — including
+        "I'm not the right person" when that's the truth.
+      </p>
+      <a href="/contact/" class="btn btn--on-dark">Start a conversation</a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .about {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(240px, 320px);
+    gap: var(--space-16);
+    align-items: center;
+  }
+  .about__portrait {
+    aspect-ratio: 4 / 5;
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-lg);
+    background: var(--surface-warm-2);
+    display: grid;
+    place-items: center;
+    color: var(--text-subtle);
+    font-size: var(--text-xs);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .record__heading { margin-top: var(--space-12); }
+  .record { margin: 0; padding-left: 1.1em; }
+  .record li { margin-bottom: var(--space-3); }
+  .dark-link { color: var(--gray-200); }
+  .section--dark .btn { margin-top: var(--space-4); }
+  @media (max-width: 760px) {
+    .about { grid-template-columns: 1fr; gap: var(--space-8); }
+    .about__portrait { max-width: 260px; }
+  }
+</style>

@@ -1,0 +1,32 @@
+<!-- @dsCard group="Colors" viewport="700x180" name="Accent (rare)" subtitle="Deep blue — the one chromatic action colour; opt-in emphasis only" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  body { margin: 0; font-family: var(--font-mono); background: var(--surface-card); }
+  .row { display: flex; padding: 22px 24px 8px; gap: 12px; }
+  .sw { flex: 1; }
+  .chip { height: 68px; border-radius: 8px; border: 1px solid var(--border-subtle); }
+  .name { font-size: 10px; color: var(--text-strong); margin-top: 8px; }
+  .hex { font-size: 9px; color: var(--text-subtle); margin-top: 2px; }
+  .note { font-family: var(--font-sans); font-size: 12px; color: var(--text-muted); padding: 4px 24px 22px; line-height: 1.5; max-width: 60ch; }
+  b { color: var(--text-strong); font-weight: 600; }
+</style>
+</head>
+<body>
+  <div class="row">
+    <div class="sw"><div class="chip" style="background:var(--accent-soft)"></div><div class="name">accent-soft</div><div class="hex" id="h0"></div></div>
+    <div class="sw"><div class="chip" style="background:var(--accent)"></div><div class="name">accent</div><div class="hex" id="h1"></div></div>
+    <div class="sw"><div class="chip" style="background:var(--accent-hover)"></div><div class="name">accent-hover</div><div class="hex" id="h2"></div></div>
+    <div class="sw"><div class="chip" style="background:var(--accent-active)"></div><div class="name">accent-active</div><div class="hex" id="h3"></div></div>
+  </div>
+  <p class="note">A single, desaturated <b>deep blue</b> — the only chromatic action colour. Reserved for rare emphasis (a hero underline, an accent badge or button). The brand stays monochrome ink by default; never a wall of blue.</p>
+  <script>
+    const cs = getComputedStyle(document.documentElement);
+    [['--accent-soft','h0'],['--accent','h1'],['--accent-hover','h2'],['--accent-active','h3']]
+      .forEach(([v,id]) => document.getElementById(id).textContent = cs.getPropertyValue(v).trim());
+  </script>
+</body>
+</html>
