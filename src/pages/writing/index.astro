@@ -1,0 +1,137 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+
+const essays = (await getCollection('essays', ({ data }) => !data.draft)).sort(
+  (a, b) => {
+    if (a.data.pinned !== b.data.pinned) return a.data.pinned ? -1 : 1;
+    return b.data.date.valueOf() - a.data.date.valueOf();
+  }
+);
+
+const fmt = new Intl.DateTimeFormat('en-GB', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+});
+
+const models = [
+  {
+    name: '[MODEL SLOT 1 — name TBD]',
+    description: '[MODEL SLOT 1 — one-line description of the framework and when it applies.]',
+  },
+  {
+    name: '[MODEL SLOT 2 — name TBD]',
+    description: '[MODEL SLOT 2 — one-line description of the framework and when it applies.]',
+  },
+];
+---
+
+<Base
+  title="Writing — Async Forest"
+  description="Essays on software, AI, and the judgement calls in between, by Henry Franks."
+>
+  <section class="intro container container--narrow">
+    <h1>Writing</h1>
+  </section>
+
+  <section class="essays container container--narrow">
+    <ul class="essays__list">
+      {essays.map((essay) => (
+        <li class="essays__item">
+          <div class="essays__meta mono">
+            <time datetime={essay.data.date.toISOString().slice(0, 10)}>
+              {fmt.format(essay.data.date)}
+            </time>
+            {essay.data.pinned && <span class="essays__pin">pinned</span>}
+          </div>
+          <a class="essays__title" href={`/writing/${essay.id}/`}>{essay.data.title}</a>
+          <p class="essays__standfirst">{essay.data.standfirst}</p>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="models container container--narrow" id="models" aria-labelledby="models-heading">
+    <h2 id="models-heading">Models</h2>
+    <p class="models__intro">
+      Named frameworks I use and reuse. Short descriptions here; the essays do
+      the arguing.
+    </p>
+    <ul class="models__list">
+      {models.map((m) => (
+        <li class="models__item">
+          <span class="models__name">{m.name}</span>
+          <p class="models__description">{m.description}</p>
+        </li>
+      ))}
+    </ul>
+  </section>
+</Base>
+
+<style>
+  .intro {
+    padding-block: var(--section-y) var(--space-6);
+  }
+
+  .essays__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .essays__item {
+    margin: 0;
+    padding-block: var(--space-8);
+  }
+  .essays__item + .essays__item { border-top: 1px solid var(--border-subtle); }
+  .essays__meta {
+    display: flex;
+    gap: var(--space-4);
+    font-size: var(--text-xs);
+    color: var(--text-muted);
+    margin-bottom: var(--space-2);
+  }
+  .essays__pin {
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-eyebrow);
+  }
+  .essays__title {
+    font-size: var(--text-lg);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-tight);
+    text-decoration: none;
+  }
+  .essays__title:hover { color: var(--accent); }
+  .essays__standfirst {
+    margin: var(--space-2) 0 0;
+    color: var(--text-muted);
+  }
+
+  .models {
+    padding-block: var(--space-16) var(--space-8);
+  }
+  .models h2 {
+    padding-top: var(--space-8);
+    border-top: 1px solid var(--border-default);
+  }
+  .models__intro { color: var(--text-muted); }
+  .models__list {
+    list-style: none;
+    margin: var(--space-8) 0 0;
+    padding: 0;
+  }
+  .models__item {
+    margin: 0;
+    padding-block: var(--space-5);
+  }
+  .models__item + .models__item { border-top: 1px solid var(--border-subtle); }
+  .models__name {
+    font-weight: var(--weight-semibold);
+    color: var(--text-strong);
+  }
+  .models__description {
+    margin: var(--space-1) 0 0;
+    color: var(--text-muted);
+    font-size: var(--text-base);
+  }
+</style>

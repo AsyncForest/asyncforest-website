@@ -1,86 +1,54 @@
 ---
-import Logo from './Logo.astro';
-const year = new Date().getFullYear();
+// Quiet, single-column footer. Carries the Companies Act disclosure line —
+// a legal requirement, not decoration. The tree mark already appears in the
+// header; per STYLESEED.md it appears once per page, so no logo here.
 ---
 
 <footer class="footer">
-  <div class="container">
-    <div class="footer__top">
-      <div class="footer__brand">
-        <Logo size={26} />
-        <p class="footer__strap">
-          Independent technical assurance for founders and investors. One named
-          expert, a defined scope, and a written report you can act on.
-        </p>
-      </div>
-      <nav class="footer__col" aria-label="Services">
-        <span class="footer__heading">Services</span>
-        <a href="/services/technical-due-diligence/">Technical due diligence</a>
-        <a href="/services/ai-readiness-review/">AI readiness review</a>
-        <a href="/services/ai-code-audit/">AI-built app audit</a>
-      </nav>
-      <nav class="footer__col" aria-label="Practice">
-        <span class="footer__heading">Practice</span>
-        <a href="/how-it-works/">How it works</a>
-        <a href="/about/">About Henry</a>
-        <a href="/writing/">Writing</a>
-        <a href="/contact/">Contact</a>
-      </nav>
-    </div>
-    <div class="footer__legal">
-      <span>© {year} Async Forest Advisory Ltd. Registered in England &amp; Wales.</span>
-      <span>Reports contain technical observations, not legal advice.</span>
-    </div>
+  <div class="container footer__inner">
+    <p class="footer__practice">
+      Async Forest is the consulting practice of Henry Franks. Engagements are
+      contracted with Async Forest Ltd.
+    </p>
+    <p class="footer__links">
+      <a href="https://www.linkedin.com/in/[LINKEDIN SLOT]" rel="me">LinkedIn</a>
+      <span aria-hidden="true">·</span>
+      <a href="mailto:henry@asyncforest.co.uk">[EMAIL SLOT — address on asyncforest.co.uk]</a>
+    </p>
+    <p class="footer__legal">
+      Async Forest Ltd, registered in England and Wales, company no.
+      [COMPANY NUMBER SLOT]. Registered office: [REGISTERED OFFICE SLOT].
+    </p>
   </div>
 </footer>
 
 <style>
   .footer {
-    background: var(--surface-dark);
-    color: var(--gray-400);
-    padding-block: var(--space-16) var(--space-8);
-    border-top: 1px solid var(--gray-800);
+    margin-top: var(--section-y);
+    border-top: 1px solid var(--border-subtle);
+    background: var(--surface-warm);
+    padding-block: var(--space-10);
   }
-  .footer :global(.logo) { color: var(--gray-50); }
-  .footer :global(.logo__descriptor) { color: var(--gray-500); }
-  .footer__top {
-    display: grid;
-    grid-template-columns: minmax(0, 1.8fr) minmax(0, 1fr) minmax(0, 1fr);
-    gap: var(--space-12);
-    padding-bottom: var(--space-12);
-    border-bottom: 1px solid var(--gray-800);
-  }
-  .footer__strap {
-    margin-top: var(--space-6);
-    font-size: var(--text-base);
-    color: var(--gray-500);
-    max-width: 36ch;
-  }
-  .footer__col { display: flex; flex-direction: column; gap: var(--space-3); }
-  .footer__heading {
-    font-family: var(--font-mono);
-    font-size: var(--text-xs);
-    letter-spacing: var(--tracking-eyebrow);
-    text-transform: uppercase;
-    color: var(--gray-600);
-    margin-bottom: var(--space-2);
-  }
-  .footer__col a {
-    color: var(--gray-400);
-    text-decoration: none;
-    font-size: var(--text-base);
-  }
-  .footer__col a:hover { color: var(--gray-50); }
-  .footer__legal {
+  .footer__inner {
     display: flex;
-    justify-content: space-between;
-    gap: var(--space-6);
-    flex-wrap: wrap;
-    padding-top: var(--space-8);
-    font-size: var(--text-sm);
-    color: var(--gray-600);
+    flex-direction: column;
+    gap: var(--space-3);
   }
-  @media (max-width: 720px) {
-    .footer__top { grid-template-columns: 1fr; gap: var(--space-8); }
+  .footer__practice {
+    color: var(--text-muted);
+    font-size: var(--text-sm);
+    max-width: none;
+  }
+  .footer__links {
+    font-size: var(--text-sm);
+    color: var(--text-muted);
+  }
+  .footer__links a { color: var(--text-muted); }
+  .footer__links a:hover { color: var(--text-strong); }
+  .footer__links span { margin-inline: var(--space-2); color: var(--text-subtle); }
+  .footer__legal {
+    color: var(--text-muted);
+    font-size: var(--text-xs);
+    max-width: none;
   }
 </style>

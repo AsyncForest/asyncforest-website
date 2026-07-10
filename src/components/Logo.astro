@@ -30,7 +30,6 @@ const { size = 28, wordmark = true } = Astro.props;
   {wordmark && (
     <span class="logo__text">
       <span class="logo__name">Async Forest</span>
-      <span class="logo__descriptor">Advisory</span>
     </span>
   )}
 </span>
@@ -52,16 +51,5 @@ const { size = 28, wordmark = true } = Astro.props;
     font-size: var(--text-md);
     letter-spacing: var(--tracking-tight);
     white-space: nowrap;
-  }
-  .logo__descriptor {
-    font-family: var(--font-mono);
-    font-size: var(--text-2xs);
-    letter-spacing: var(--tracking-eyebrow);
-    text-transform: uppercase;
-    color: var(--text-muted);
-    white-space: nowrap;
-  }
-  @media (max-width: 560px) {
-    .logo__descriptor { display: none; }
   }
 </style>

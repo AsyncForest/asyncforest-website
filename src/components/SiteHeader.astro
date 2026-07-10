@@ -2,17 +2,17 @@
 import Logo from './Logo.astro';
 const { pathname } = Astro.url;
 const links = [
-  { href: '/services/', label: 'Services' },
-  { href: '/how-it-works/', label: 'How it works' },
-  { href: '/about/', label: 'About' },
+  { href: '/work/', label: 'Work with me' },
   { href: '/writing/', label: 'Writing' },
+  { href: '/about/', label: 'About' },
+  { href: '/contact/', label: 'Contact' },
 ];
 const isActive = (href: string) => pathname.startsWith(href);
 ---
 
 <header class="header">
   <div class="container header__inner">
-    <a href="/" class="header__home" aria-label="Async Forest Advisory — home">
+    <a href="/" class="header__home" aria-label="Async Forest — home">
       <Logo size={26} />
     </a>
     <nav class="header__nav" aria-label="Main">
@@ -21,7 +21,6 @@ const isActive = (href: string) => pathname.startsWith(href);
           {l.label}
         </a>
       ))}
-      <a href="/contact/" class="btn btn--primary header__cta">Start a conversation</a>
     </nav>
   </div>
 </header>
@@ -63,7 +62,6 @@ const isActive = (href: string) => pathname.startsWith(href);
     color: var(--text-strong);
     box-shadow: inset 0 -2px 0 0 var(--accent);
   }
-  .header__cta { padding-inline: var(--space-4); }
   @media (max-width: 720px) {
     .header__nav { gap: var(--space-4); }
   }
