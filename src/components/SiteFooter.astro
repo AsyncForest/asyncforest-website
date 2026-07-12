@@ -1,4 +1,5 @@
 ---
+import { BOOKING_URL } from '../consts';
 // Quiet, single-column footer. Carries the Companies Act disclosure line —
 // a legal requirement, not decoration. The tree mark already appears in the
 // header; per STYLESEED.md it appears once per page, so no logo here.
@@ -11,9 +12,7 @@
       contracted with Async Forest Ltd.
     </p>
     <p class="footer__links">
-      <a href="https://www.linkedin.com/in/[LINKEDIN SLOT]" rel="me">LinkedIn</a>
-      <span aria-hidden="true">·</span>
-      <a href="mailto:henry@asyncforest.co.uk">[EMAIL SLOT — address on asyncforest.co.uk]</a>
+      <a href={BOOKING_URL} target="_blank" rel="noopener">Book a call</a>
     </p>
     <p class="footer__legal">
       Async Forest Ltd, registered in England and Wales, company no.
@@ -45,7 +44,6 @@
   }
   .footer__links a { color: var(--text-muted); }
   .footer__links a:hover { color: var(--text-strong); }
-  .footer__links span { margin-inline: var(--space-2); color: var(--text-subtle); }
   .footer__legal {
     color: var(--text-muted);
     font-size: var(--text-xs);

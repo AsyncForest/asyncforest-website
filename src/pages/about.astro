@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import { BOOKING_URL } from '../consts';
 ---
 
 <Base
@@ -8,20 +9,14 @@ import Base from '../layouts/Base.astro';
 >
   <section class="about container container--narrow">
     <div class="about__head">
-      <div>
-        <h1>Henry Franks</h1>
-        <p class="about__thesis-marker mono">[THESIS SLOT — being written]</p>
-        <p class="about__lede">
-          I've spent my career building and architecting production software
-          and AI systems — as a founder, CTO, and chief architect — and
-          teaching the responsible-AI side of the field at King's College
-          London and Notre Dame. My doctoral research was on trust and
-          cooperation in open systems of autonomous agents.
-        </p>
-      </div>
-      <div class="about__photo" aria-hidden="true">
-        <span class="mono">[PHOTO SLOT — headshot]</span>
-      </div>
+      <h1>Henry Franks</h1>
+      <p class="about__lede">
+        I've spent my career building and architecting production software
+        and AI systems — as a founder, engineer, CTO, and chief architect — and
+        teaching the responsible-AI side of the field, with annual guest lectures at King's College
+        London and Notre Dame. My doctoral research was on trust and
+        cooperation in open systems of autonomous agents.
+      </p>
     </div>
 
     <div class="about__body">
@@ -30,14 +25,13 @@ import Base from '../layouts/Base.astro';
         I'm based in London. Over fifteen-plus years I've been a startup
         founder and CTO, a principal engineer, a data scientist, and a chief
         architect, across energy, insurance and data, and climate-policy AI.
-        I'm currently chief architect at a climate-policy AI non-profit. The
-        work has stayed hands-on throughout: full-stack systems, cloud
-        infrastructure on AWS, data and ML, and GenAI in production.
+        I'm currently chief architect at a climate-policy AI non-profit. I am hands-on with full-stack systems, cloud
+        infrastructure on AWS, data and ML, and GenAI in production; while providing strategic direction and long-term foresight.
       </p>
       <p>
         Most people who talk about responsible AI haven't shipped production
         systems; most people shipping GenAI don't dwell on the responsibility
-        part. My work has always sat where the two meet.
+        part. I've been fortunate to work across both.
       </p>
 
       <h2>Research</h2>
@@ -45,27 +39,19 @@ import Base from '../layouts/Base.astro';
         My PhD, from the University of Warwick, asked how trust, reputation,
         and cooperation emerge in open systems of autonomous agents. The
         publications have around 140 citations, mainly at AAMAS and in
-        Springer journals — <a href="[SCHOLAR LINK SLOT]">Google Scholar</a>.
+        Springer journals.
       </p>
 
       <h2>Teaching</h2>
       <p>
         I guest lecture annually on responsible AI at King's College London
-        and the University of Notre Dame. Some of the frameworks I teach and
-        use in engagements are written up under
-        <a href="/writing/#models">models</a>.
-      </p>
-
-      <h2>The practice</h2>
-      <p>
-        Async Forest Ltd is the company through which I consult — a UK limited
-        company with professional indemnity insurance. The judgement is mine;
-        the engagement is with the company.
+        and the University of Notre Dame. Some of the frameworks I teach are
+        the same ones I use in client engagements.
       </p>
     </div>
 
     <div class="about__close">
-      <a class="btn btn--primary" href="/contact/">Tell me about the decision you're facing</a>
+      <a class="btn btn--primary" href={BOOKING_URL} target="_blank" rel="noopener">Tell me about the decision you're facing</a>
     </div>
   </section>
 </Base>
@@ -75,34 +61,12 @@ import Base from '../layouts/Base.astro';
     padding-block: var(--section-y) var(--space-8);
   }
   .about__head {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) 200px;
-    gap: var(--space-12);
-    align-items: start;
     margin-bottom: var(--space-12);
-  }
-  .about__thesis-marker {
-    font-size: var(--text-xs);
-    color: var(--text-muted);
-    margin-bottom: var(--space-3);
   }
   .about__lede {
     font-size: var(--text-md);
     color: var(--text-muted);
     max-width: 58ch;
-  }
-  .about__photo {
-    aspect-ratio: 4 / 5;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: var(--space-4);
-    border: 1px solid var(--border-default);
-    border-radius: var(--radius-lg);
-    background: var(--surface-warm);
-    color: var(--text-muted);
-    font-size: var(--text-xs);
   }
 
   .about__body h2 {
@@ -114,13 +78,5 @@ import Base from '../layouts/Base.astro';
 
   .about__close {
     margin-top: var(--space-12);
-  }
-
-  @media (max-width: 640px) {
-    .about__head {
-      grid-template-columns: 1fr;
-      gap: var(--space-8);
-    }
-    .about__photo { max-width: 200px; }
   }
 </style>

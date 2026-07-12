@@ -1,11 +1,11 @@
 ---
 import Logo from './Logo.astro';
+import { BOOKING_URL } from '../consts';
 const { pathname } = Astro.url;
 const links = [
   { href: '/work/', label: 'Work with me' },
-  { href: '/writing/', label: 'Writing' },
   { href: '/about/', label: 'About' },
-  { href: '/contact/', label: 'Contact' },
+  { href: BOOKING_URL, label: 'Book a call', external: true },
 ];
 const isActive = (href: string) => pathname.startsWith(href);
 ---
@@ -17,7 +17,11 @@ const isActive = (href: string) => pathname.startsWith(href);
     </a>
     <nav class="header__nav" aria-label="Main">
       {links.map((l) => (
-        <a href={l.href} class:list={['header__link', { 'is-active': isActive(l.href) }]}>
+        <a
+          href={l.href}
+          class:list={['header__link', { 'is-active': !l.external && isActive(l.href) }]}
+          {...(l.external ? { target: '_blank', rel: 'noopener' } : {})}
+        >
           {l.label}
         </a>
       ))}

@@ -1,8 +1,11 @@
 ---
-// The Async Forest mark: three stacked triangle outlines forming a fir tree.
-// Each tier is drawn with a deliberate gap in a different edge, and each apex
-// sits slightly off the axis of the tier below — layers that never quite sync.
-// Per STYLESEED.md this motif appears once per page (header/footer lockup).
+// The Async Forest mark: a fir silhouette divided into three flush horizontal
+// thirds, each rendered in a different state — hatched, pixelated, solid —
+// stepping through the accent variants top to bottom (accent → hover → active).
+// A second tree sits behind in a flat accent-border tint, offset up-right and
+// knocked out around the front silhouette, so the mark reads as a forest.
+// Per STYLESEED.md this motif appears once per page (header/footer lockup),
+// so the SVG ids below are safe as static values.
 interface Props {
   size?: number;
   wordmark?: boolean;
@@ -12,20 +15,35 @@ const { size = 28, wordmark = true } = Astro.props;
 
 <span class="logo">
   <svg
-    width={size}
-    height={size}
-    viewBox="0 0 32 34"
-    fill="none"
-    stroke="currentColor"
-    stroke-width="1.75"
-    stroke-linecap="round"
-    stroke-linejoin="round"
+    width={(size * 38) / 32}
+    height={(size * 34) / 32}
+    viewBox="0 0 38 34"
     aria-hidden="true"
   >
-    <path d="M18.9 5.9 L16.6 2.2 L11 11 L22.2 11" />
-    <path d="M15.2 8.6 L8.2 19.5 L16.4 19.5 M19.6 19.5 L23.2 19.5 L15.2 8.6" />
-    <path d="M6.4 28.4 L26 28.4 L17 15.4 L13.8 19.3" />
-    <path d="M15.6 28.4 L15.6 31.8" />
+    <defs>
+      <clipPath id="af-mark-clip">
+        <path d="M17 2.5 L29.5 30 L4.5 30 Z" />
+        <rect x="15.6" y="30" width="2.8" height="3.2" />
+      </clipPath>
+      <mask id="af-mark-knock" maskUnits="userSpaceOnUse" x="0" y="0" width="38" height="34">
+        <rect width="38" height="34" fill="#fff" />
+        <path d="M17 2.5 L29.5 30 L4.5 30 Z" fill="#000" stroke="#000" stroke-width="2.4" stroke-linejoin="round" />
+        <rect x="15.6" y="30" width="2.8" height="3.2" fill="#000" stroke="#000" stroke-width="2.4" />
+      </mask>
+      <pattern id="af-mark-hatch" width="2.4" height="2.4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+        <rect width="1.05" height="2.4" fill="var(--accent)" />
+      </pattern>
+      <pattern id="af-mark-px" width="3.2" height="3.2" patternUnits="userSpaceOnUse">
+        <rect x="0" y="0" width="1.6" height="1.6" fill="var(--accent-hover)" />
+        <rect x="1.6" y="1.6" width="1.6" height="1.6" fill="var(--accent-hover)" />
+      </pattern>
+    </defs>
+    <path d="M21 1 L33.5 28.5 L8.5 28.5 Z" fill="var(--accent-border)" mask="url(#af-mark-knock)" />
+    <g clip-path="url(#af-mark-clip)">
+      <rect x="0" y="2.5" width="38" height="9.1" fill="url(#af-mark-hatch)" />
+      <rect x="0" y="11.6" width="38" height="9.3" fill="url(#af-mark-px)" />
+      <rect x="0" y="20.9" width="38" height="12.3" fill="var(--accent-active)" />
+    </g>
   </svg>
   {wordmark && (
     <span class="logo__text">

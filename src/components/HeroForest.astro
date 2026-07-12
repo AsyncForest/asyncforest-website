@@ -1,0 +1,218 @@
+---
+// The hero backdrop: full-width landscape strata plus a treeline of brand
+// trees, all generated at build time. Visual language follows the mark —
+// every tree keeps the tint-tree-behind offset with a knockout gap, and the
+// three brand states map to depth: crosshatch (far), diagonal stripe (mid),
+// solid (front). Each stratum dissolves into the one above through the 45°
+// brand hatch (pure CSS repeating-linear-gradient).
+//
+// Animation (Silk motion seed: ease-out, no bounce, reduced-motion respected):
+//   1. grow  — quick orchestrated sprout from the baseline, back row first
+//   2. sway  — very gentle idle rotation around each tree's base
+//   3. gust  — scroll-driven: wind strengthens while scrolling, then decays
+// Layered as nested <g> so the three transforms compose independently.
+
+let uid = 0;
+
+type TreeOpts = {
+  style: 'solid' | 'stripe' | 'cross';
+  tile?: number;
+  trunk?: boolean;
+  color?: string;
+  tint?: string;
+};
+
+function treeBody(ax: number, ay: number, by: number, hw: number, o: TreeOpts): string {
+  const h = by - ay;
+  const tri = `M${ax} ${ay} L${ax + hw} ${by} L${ax - hw} ${by} Z`;
+  const color = o.color ?? (o.style === 'solid' ? '#142c58' : '#234a8f');
+  const trunk = o.trunk
+    ? `<rect x="${(ax - hw * 0.056).toFixed(1)}" y="${by}" width="${(hw * 0.112).toFixed(1)}" height="${(h * 0.116).toFixed(1)}" fill="${color}"/>`
+    : '';
+  if (o.style === 'solid') return `<path d="${tri}" fill="${color}"/>${trunk}`;
+  const id = `af-t${uid++}`;
+  const t = o.tile ?? 8;
+  const bars =
+    o.style === 'stripe'
+      ? `<rect width="${(t * 0.44).toFixed(2)}" height="${t}" fill="${color}"/>`
+      : `<rect width="${(t * 0.3).toFixed(2)}" height="${t}" fill="${color}"/><rect width="${t}" height="${(t * 0.3).toFixed(2)}" fill="${color}"/>`;
+  return `<defs><pattern id="${id}" width="${t}" height="${t}" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">${bars}</pattern></defs>
+    <path d="${tri}" fill="url(#${id})"/>${trunk}`;
+}
+
+// Tint tree behind, offset up-right, knocked out around the front silhouette.
+function behindTree(ax: number, ay: number, by: number, hw: number, trunk: boolean): string {
+  const id = `af-k${uid++}`;
+  const h = by - ay;
+  const dx = hw * 0.32;
+  const dy = -h * 0.055;
+  const gap = Math.max(4, h * 0.035);
+  const tri = `M${ax} ${ay} L${ax + hw} ${by} L${ax - hw} ${by} Z`;
+  const trunkKnock = trunk
+    ? `<rect x="${(ax - hw * 0.056).toFixed(1)}" y="${by}" width="${(hw * 0.112).toFixed(1)}" height="${(h * 0.116).toFixed(1)}" fill="#000" stroke="#000" stroke-width="${(gap * 2).toFixed(1)}"/>`
+    : '';
+  return `<defs><mask id="${id}" maskUnits="userSpaceOnUse" x="${ax - hw * 2}" y="${ay - h}" width="${hw * 4}" height="${h * 2.5}">
+      <rect x="${ax - hw * 2}" y="${ay - h}" width="${hw * 4}" height="${h * 2.5}" fill="#fff"/>
+      <path d="${tri}" fill="#000" stroke="#000" stroke-width="${(gap * 2).toFixed(1)}" stroke-linejoin="round"/>
+      ${trunkKnock}
+    </mask></defs>
+    <path d="M${(ax + dx).toFixed(1)} ${(ay + dy).toFixed(1)} L${(ax + dx + hw).toFixed(1)} ${(by + dy * 0.6).toFixed(1)} L${(ax + dx - hw).toFixed(1)} ${(by + dy * 0.6).toFixed(1)} Z" fill="#cdd9ee" mask="url(#${id})"/>`;
+}
+
+// One animated tree: grow ▸ gust ▸ sway, all rotating/scaling about the base.
+function tree(
+  ax: number,
+  h: number,
+  by: number,
+  o: TreeOpts & { growDelay: number; amp: number; swayDur: number; swayDelay: number; gustK: number },
+): string {
+  const ay = by - h;
+  const hw = h * (o.style === 'solid' ? 0.46 : o.style === 'stripe' ? 0.44 : 0.42);
+  const origin = `transform-origin:${ax}px ${by}px`;
+  return `<g class="t-grow" style="${origin};animation-delay:${o.growDelay}ms">
+    <g class="t-gust" style="${origin};--gk:${o.gustK}">
+      <g class="t-sway" style="${origin};--amp:${o.amp}deg;animation-duration:${o.swayDur}s;animation-delay:${o.swayDelay}s">
+        ${behindTree(ax, ay, by, hw, !!o.trunk)}${treeBody(ax, ay, by, hw, o)}
+      </g></g></g>`;
+}
+
+const far = [660, 762, 864, 972, 1088, 1204, 1318, 1408].map((x, i) => {
+  const h = [74, 90, 70, 94, 72, 88, 74, 84][i];
+  return tree(x, h, 550, {
+    style: 'cross', tile: 6,
+    growDelay: i * 45, gustK: 0.45,
+    amp: 0.45, swayDur: 4.2 + ((i * 7) % 5) * 0.5, swayDelay: -(i * 1.3),
+  });
+});
+
+const mid = [700, 880, 1080, 1360].map((x, i) => {
+  const h = [130, 148, 124, 142][i];
+  return tree(x, h, 620, {
+    style: 'stripe', tile: 8, trunk: true,
+    growDelay: 220 + i * 60, gustK: 0.75,
+    amp: 0.7, swayDur: 5 + ((i * 5) % 4) * 0.6, swayDelay: -(i * 1.7),
+  });
+});
+
+const front = [990, 1270].map((x, i) => {
+  const h = [230, 268][i];
+  return tree(x, h, 672, {
+    style: 'solid', trunk: true,
+    growDelay: 430 + i * 90, gustK: 1,
+    amp: 0.85, swayDur: 6.2 + i * 0.9, swayDelay: -(i * 2.1),
+  });
+});
+
+const forest = `<g opacity="0.35">${far.join('')}</g><g opacity="0.75">${mid.join('')}</g>${front.join('')}`;
+---
+
+<div class="hero-forest" aria-hidden="true">
+  <div class="band band--far"></div>
+  <div class="band band--mid"></div>
+  <div class="band band--base"></div>
+  <svg viewBox="0 0 1440 690" width="1440" height="690" set:html={forest} />
+</div>
+
+<style is:global>
+  .hero-forest {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+
+  /* Landscape strata — flat colour blocks stepping down the accent family,
+     each dissolving into the band above through the brand 45° hatch. */
+  .hero-forest .band { position: absolute; left: 0; right: 0; }
+  .hero-forest .band--far { bottom: 140px; height: 160px; background: var(--accent-soft); }
+  .hero-forest .band--mid { bottom: 30px; height: 110px; background: var(--accent-border); }
+  .hero-forest .band--mid::before {
+    content: '';
+    position: absolute; left: 0; right: 0; top: -20px; height: 20px;
+    background: repeating-linear-gradient(45deg, var(--accent-border) 0 4.4px, transparent 4.4px 10px);
+  }
+  .hero-forest .band--base { bottom: 0; height: 30px; background: var(--accent-active); }
+  .hero-forest .band--base::before {
+    content: '';
+    position: absolute; left: 0; right: 0; top: -14px; height: 14px;
+    background: repeating-linear-gradient(45deg, var(--accent-active) 0 4.4px, transparent 4.4px 10px);
+  }
+
+  .hero-forest svg {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+  }
+
+  /* 1 — orchestrated grow-in from the baseline (back rows first) */
+  .hero-forest .t-grow {
+    animation: af-grow 0.5s cubic-bezier(0.22, 0.61, 0.36, 1) backwards;
+  }
+  @keyframes af-grow {
+    from { transform: scale(0); }
+  }
+
+  /* 2 — scroll gust; --gust is driven from the script below */
+  .hero-forest .t-gust {
+    transform: rotate(calc(var(--gust, 0deg) * var(--gk, 1)));
+  }
+
+  /* 3 — gentle idle sway */
+  .hero-forest .t-sway {
+    animation: af-sway var(--sway-dur, 5s) ease-in-out infinite alternate;
+  }
+  @keyframes af-sway {
+    from { transform: rotate(calc(var(--amp, 0.4deg) * -1)); }
+    to { transform: rotate(var(--amp, 0.4deg)); }
+  }
+
+  @media (max-width: 860px) {
+    .hero-forest svg {
+      transform: scale(0.62);
+      transform-origin: bottom right;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-forest .t-grow,
+    .hero-forest .t-sway { animation: none; }
+    .hero-forest .t-gust { transform: none !important; }
+  }
+</style>
+
+<script>
+  // Scroll gust: wind strengthens with scroll velocity and decays smoothly.
+  const svg = document.querySelector<SVGSVGElement>('.hero-forest svg');
+  if (svg && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    let target = 0;
+    let current = 0;
+    let lastY = window.scrollY;
+    let running = false;
+
+    const step = () => {
+      target *= 0.92;
+      current += (target - current) * 0.1;
+      if (Math.abs(current) < 0.005 && Math.abs(target) < 0.005) {
+        current = 0;
+        svg.style.setProperty('--gust', '0deg');
+        running = false;
+        return;
+      }
+      svg.style.setProperty('--gust', `${current.toFixed(3)}deg`);
+      requestAnimationFrame(step);
+    };
+
+    window.addEventListener(
+      'scroll',
+      () => {
+        const dy = window.scrollY - lastY;
+        lastY = window.scrollY;
+        target = Math.max(-3, Math.min(3, target + dy * 0.04));
+        if (!running) {
+          running = true;
+          requestAnimationFrame(step);
+        }
+      },
+      { passive: true },
+    );
+  }
+</script>

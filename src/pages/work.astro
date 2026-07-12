@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import { BOOKING_URL } from '../consts';
 ---
 
 <Base
@@ -28,7 +29,7 @@ import Base from '../layouts/Base.astro';
   </section>
 
   <section class="engagement container container--narrow" id="counsel" aria-labelledby="counsel-heading">
-    <p class="engagement__question mono">Keep us going</p>
+    <p class="engagement__question mono">What next?</p>
     <h2 id="counsel-heading">Ongoing counsel</h2>
     <p>
       The AI era requires new approaches, but changes so fast it can feel impossible to make long term decisions. I'll help you build out long-term de-risked stability in your AI strategy and architecture.
@@ -36,7 +37,7 @@ import Base from '../layouts/Base.astro';
   </section>
 
   <section class="close container container--narrow">
-    <a class="btn btn--primary" href="/contact/">Tell me about the decision you're facing</a>
+    <a class="btn btn--primary" href={BOOKING_URL} target="_blank" rel="noopener">Tell me about the decision you're facing</a>
   </section>
 </Base>
 
