@@ -1,8 +1,9 @@
 ---
 import { BOOKING_URL } from '../consts';
 // Quiet, single-column footer. Carries the Companies Act disclosure line —
-// a legal requirement, not decoration. The tree mark already appears in the
-// header; per STYLESEED.md it appears once per page, so no logo here.
+// a legal requirement, not decoration. Registered office line is pending the
+// AD01 switch to the accountant's address (see TODO.md). The tree mark already
+// appears in the header; per STYLESEED.md it appears once per page, so no logo here.
 ---
 
 <footer class="footer">
@@ -13,10 +14,12 @@ import { BOOKING_URL } from '../consts';
     </p>
     <p class="footer__links">
       <a href={BOOKING_URL} target="_blank" rel="noopener">Book a call</a>
+      <span class="footer__sep" aria-hidden="true">·</span>
+      <a href="/privacy/">Privacy notice</a>
     </p>
     <p class="footer__legal">
       Async Forest Ltd, registered in England and Wales, company no.
-      [COMPANY NUMBER SLOT]. Registered office: [REGISTERED OFFICE SLOT].
+      17351665.
     </p>
   </div>
 </footer>
@@ -44,6 +47,7 @@ import { BOOKING_URL } from '../consts';
   }
   .footer__links a { color: var(--text-muted); }
   .footer__links a:hover { color: var(--text-strong); }
+  .footer__sep { color: var(--text-muted); margin-inline: var(--space-2); }
   .footer__legal {
     color: var(--text-muted);
     font-size: var(--text-xs);

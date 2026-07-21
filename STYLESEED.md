@@ -34,4 +34,7 @@
                      the tint-behind offset)
 - Voice:             sentence case everywhere · "you"/"I", never royal "we" · no emoji ·
                      warm, crisp, no hype · "technical observations, not legal advice"
+                     EXCEPTION — legal/company pages (privacy notice, terms, disclosures)
+                     speak as "we" = Async Forest Ltd, and never frame the company as an
+                     individual ("just me"): corporate-separation requirement (2026-07-21)
 - Locked:            2026-07-12  (mark, brand states, hero landscape + motion added)
