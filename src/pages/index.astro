@@ -3,6 +3,21 @@ import Base from '../layouts/Base.astro';
 import HeroForest from '../components/HeroForest.astro';
 import { BOOKING_URL } from '../consts';
 
+const testimonials = [
+  {
+    quote:
+      "Henry is wonderful to partner with, especially when brainstorming new ideas or trying to figure out how to make something work with caveats or complex constraints. He has a keen eye for tradeoffs, and is able to discern the need for quick wins vs longterm sustainability. He is constantly learning new things and diving deep into how new technologies work and experimenting with them. He's also a delightful human.",
+    name: 'Tamara Miner',
+    role: 'Founder, Senior Technology Leader, Former CTO of Climate Policy Radar',
+  },
+  {
+    quote:
+      'Each semester, I invite Henry to be a Guest Lecturer for my International Digital IP and Cyber Security Course. His ability to make even the most complex and contested topics feel clear, engaging, and genuinely accessible is exceptional. He has a rare talent for translating nuance into something a non-specialist audience can not only understand but truly connect with. His perspective brings depth, clarity, and real impact.',
+    name: 'Frederick Mostert',
+    role: 'Professor of Practice, Dickson Poon School of Law, King’s College London',
+  },
+];
+
 const doors = [
   {
     question: 'Is it sound?',
@@ -38,13 +53,35 @@ const doors = [
         <span class="hero__line hero__line--2">and the trees</span>
       </h1>
       <p class="hero__sub">
-        Dr Henry Franks, director of Async Forest Ltd, has spent two decades researching agentic systems, building production machine learning, and teaching responsible AI. I'll help you make the right decisions about your AI strategy and architecture.
+        I'm Dr. Henry Franks, director of Async Forest Ltd. I have spent two decades researching agentic systems, building production machine learning in startups and enterprises, and teaching responsible AI. I'll help you make the right decisions about your AI strategy and architecture.
       </p>
       <a class="btn btn--primary" href={BOOKING_URL} target="_blank" rel="noopener">Get in touch about your project</a>
     </div>
   </section>
 
-  <section class="doors container container--narrow" aria-label="Ways to work with me">
+  <section class="testimonials section--warm" aria-labelledby="testimonials-heading">
+    <div class="container container--narrow">
+      <h2 class="eyebrow" id="testimonials-heading">What people say</h2>
+      <ul class="testimonials__list">
+        {testimonials.map((t) => (
+          <li class="testimonial">
+            <figure class="testimonial__figure">
+              <blockquote class="testimonial__quote">
+                <p>{t.quote}</p>
+              </blockquote>
+              <figcaption class="testimonial__source">
+                <span class="testimonial__name">{t.name}</span>
+                <span class="testimonial__role">{t.role}</span>
+              </figcaption>
+            </figure>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="doors container container--narrow" aria-labelledby="doors-heading">
+    <h2 class="eyebrow" id="doors-heading">What I can help you with</h2>
     <ol class="doors__list">
       {doors.map((d) => (
         <li class="door">
@@ -109,6 +146,9 @@ const doors = [
   .doors {
     padding-block: var(--space-16);
   }
+  .doors .eyebrow {
+    margin-bottom: var(--space-6);
+  }
   .doors__list {
     list-style: none;
     margin: 0;
@@ -142,6 +182,47 @@ const doors = [
   }
   .door__link:hover .door__question { color: var(--accent); }
   .door__link:focus-visible .door__question { color: var(--accent); }
+
+  .testimonials {
+    padding-block: var(--space-16);
+  }
+  .testimonials .eyebrow {
+    margin-bottom: var(--space-10);
+  }
+  .testimonials__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: var(--space-12);
+  }
+  .testimonial {
+    margin: 0;
+  }
+  .testimonial__figure {
+    margin: 0;
+  }
+  .testimonial__quote {
+    margin: 0 0 var(--space-5);
+  }
+  .testimonial__quote p {
+    font-size: var(--text-lg);
+    line-height: var(--leading-normal);
+    color: var(--text-body);
+    max-width: 52ch;
+  }
+  .testimonial__quote p::before { content: '\201C'; }
+  .testimonial__quote p::after { content: '\201D'; }
+  .testimonial__name {
+    display: block;
+    font-weight: var(--weight-semibold);
+    color: var(--text-strong);
+  }
+  .testimonial__role {
+    display: block;
+    font-size: var(--text-sm);
+    color: var(--text-muted);
+  }
 
   .close {
     padding-block: var(--space-16) var(--space-8);
