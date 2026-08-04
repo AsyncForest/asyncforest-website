@@ -45,6 +45,11 @@ if (!existsSync(distDir)) {
 
 for (const file of walk(distDir, ['.html'])) {
   const rel = relative(root, file);
+  // Essay pages carry the author's editorial voice, not oracle-frame site
+  // copy — exclamation marks and quoted "banned" words are legitimate there.
+  // The listing page and site chrome (checked on every other page) still get
+  // the full register rules, and the SLOT inventory below still scans src/.
+  if (/^dist\/writing\/[^/]+\/index\.html$/.test(rel)) continue;
   const text = visibleText(readFileSync(file, 'utf8'));
   for (const word of BANNED_WORDS) {
     const re = new RegExp(`\\b${word.replace('-', '[- ]')}\\b`, 'i');

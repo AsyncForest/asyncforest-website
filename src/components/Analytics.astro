@@ -1,0 +1,17 @@
+---
+// Cookie-less analytics, gated behind GOATCOUNTER_CODE in src/consts.ts.
+// Renders nothing until the code is set, and never in dev.
+import { GOATCOUNTER_CODE } from '../consts';
+const enabled = GOATCOUNTER_CODE !== '' && import.meta.env.PROD;
+---
+
+{
+  enabled && (
+    <script
+      is:inline
+      data-goatcounter={`https://${GOATCOUNTER_CODE}.goatcounter.com/count`}
+      async
+      src="https://gc.zgo.at/count.js"
+    />
+  )
+}

@@ -1,0 +1,311 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import AuthorBlock from '../../components/AuthorBlock.astro';
+
+export async function getStaticPaths() {
+  // Drafts build in dev only; production builds (and so the sitemap) skip them.
+  const posts = await getCollection('writing', ({ data }) => import.meta.env.DEV || !data.draft);
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+const { title, description, pubDate, updatedDate, ogImage } = post.data;
+
+const fmt = new Intl.DateTimeFormat('en-GB', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+});
+const isoDay = (d: Date) => d.toISOString().slice(0, 10);
+
+const canonical = new URL(`/writing/${post.id}/`, Astro.site).href;
+const ogImageUrl = new URL(ogImage ?? `/open-graph/${post.id}.png`, Astro.site).href;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: title,
+  description,
+  datePublished: pubDate.toISOString(),
+  ...(updatedDate ? { dateModified: updatedDate.toISOString() } : {}),
+  author: {
+    '@type': 'Person',
+    name: 'Henry Franks',
+    url: new URL('/about/', Astro.site).href,
+  },
+  publisher: { '@type': 'Organization', name: 'Async Forest Ltd', url: Astro.site?.href },
+  mainEntityOfPage: canonical,
+  image: ogImageUrl,
+};
+---
+
+<Base
+  title={`${title} — Async Forest`}
+  description={description}
+  ogType="article"
+  ogImage={ogImageUrl}
+  publishedTime={pubDate.toISOString()}
+  modifiedTime={updatedDate?.toISOString()}
+>
+  <script slot="head" is:inline>
+    document.documentElement.classList.add('js');
+  </script>
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+  <article class="essay">
+    <header class="essay__header">
+      <p class="essay__date mono">
+        <time datetime={isoDay(pubDate)}>{fmt.format(pubDate)}</time>
+        {
+          updatedDate && (
+            <span>
+              · Updated <time datetime={isoDay(updatedDate)}>{fmt.format(updatedDate)}</time>
+            </span>
+          )
+        }
+      </p>
+      <h1>{title}</h1>
+    </header>
+
+    <div class="prose">
+      <Content />
+    </div>
+
+    <footer class="essay__close">
+      <AuthorBlock />
+    </footer>
+  </article>
+
+  <!-- The one permitted enhancement (§2/§8): expand-in-place footnote toggles
+       on narrow viewports. Without JS the `js` class is never added, so notes
+       stay visible inline by default. -->
+  <script is:inline>
+    document.querySelectorAll('.fn-toggle').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var note = document.getElementById(btn.getAttribute('aria-controls'));
+        if (!note) return;
+        var open = note.classList.toggle('is-open');
+        btn.setAttribute('aria-expanded', String(open));
+      });
+    });
+  </script>
+</Base>
+
+<style>
+  /* Reading column: 68ch measure. On wide viewports the article grows to make
+     room for the sidenote margin; the text column stays capped by .prose > *. */
+  .essay {
+    --sidenote-width: 16rem;
+    --sidenote-gap: 3rem;
+    max-width: calc(var(--container-prose) + 2 * var(--gutter));
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+    padding-block: var(--section-y) var(--space-8);
+  }
+  @media (min-width: 69em) {
+    .essay {
+      max-width: calc(
+        var(--container-prose) + 2 * var(--gutter) + var(--sidenote-width) + var(--sidenote-gap)
+      );
+    }
+  }
+
+  .essay__header {
+    max-width: var(--container-prose);
+    margin-bottom: var(--space-12);
+  }
+  .essay__date {
+    font-size: var(--text-xs);
+    color: var(--text-muted);
+    margin-bottom: var(--space-4);
+  }
+
+  .prose > :global(*) {
+    max-width: var(--container-prose);
+  }
+  .prose :global(h2) { margin-top: var(--space-12); }
+  .prose :global(h3) { margin-top: var(--space-8); }
+  .prose :global(blockquote) {
+    margin: var(--space-8) 0;
+    padding-left: var(--space-6);
+    border-left: 2px solid var(--border-strong);
+    color: var(--text-muted);
+  }
+  .prose :global(blockquote p) { font-size: var(--text-md); }
+  .prose :global(hr) {
+    width: var(--space-16);
+    margin-inline: 0;
+  }
+  .prose :global(img) {
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--radius-sm);
+  }
+
+  /* Code: Shiki colours the tokens; long lines scroll, never wrap or overflow. */
+  .prose :global(pre) {
+    padding: var(--space-4) var(--space-5);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    overflow-x: auto;
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
+  }
+  .prose :global(:not(pre) > code) {
+    background: var(--surface-warm-2);
+    border-radius: var(--radius-sm);
+    padding: 0.1em 0.35em;
+  }
+
+  /* Tables (GFM): hairline rules, horizontal scroll when too wide. */
+  .prose :global(table) {
+    display: block;
+    overflow-x: auto;
+    border-collapse: collapse;
+    font-size: var(--text-base);
+  }
+  .prose :global(th),
+  .prose :global(td) {
+    border: 1px solid var(--border-default);
+    padding: var(--space-2) var(--space-4);
+    text-align: left;
+  }
+  .prose :global(th) {
+    background: var(--surface-warm);
+    font-weight: var(--weight-semibold);
+  }
+
+  /* Heading anchors: invisible until hover or keyboard focus. */
+  .prose :global(.heading-anchor) {
+    margin-left: 0.35em;
+    font-family: var(--font-mono);
+    font-size: 0.8em;
+    color: var(--text-muted);
+    text-decoration: none;
+    opacity: 0;
+    transition: opacity var(--duration-fast) var(--ease-out);
+  }
+  .prose :global(h2:hover .heading-anchor),
+  .prose :global(h3:hover .heading-anchor),
+  .prose :global(h4:hover .heading-anchor),
+  .prose :global(.heading-anchor:focus-visible) {
+    opacity: 1;
+  }
+
+  /* --- Footnotes -----------------------------------------------------------
+     Markup comes from src/plugins/rehype-sidenotes.mjs. Wide viewports get
+     Tufte-style sidenotes, always visible; narrow viewports get expand-in-
+     place notes, collapsed only when JS is there to reopen them. */
+
+  .prose :global(.fn-marker) {
+    font-family: var(--font-mono);
+    font-size: 0.72em;
+    font-weight: var(--weight-medium);
+    color: var(--accent);
+  }
+  .prose :global(.fn-toggle) {
+    display: none;
+    min-width: 1.6rem;
+    min-height: 1.6rem;
+    padding: 0 var(--space-2);
+    margin-inline: 2px;
+    border: 1px solid var(--accent-border);
+    border-radius: var(--radius-sm);
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: var(--weight-medium);
+    line-height: 1.5;
+    vertical-align: 0.2em;
+    cursor: pointer;
+  }
+  .prose :global(.fn-toggle[aria-expanded='true']) {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--text-on-accent);
+  }
+  .prose :global(.fn-note) {
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
+    color: var(--text-muted);
+  }
+  .prose :global(.fn-note-label) {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: var(--weight-medium);
+    color: var(--accent);
+    margin-right: var(--space-2);
+  }
+  .prose :global(.fn-note-p) { display: block; }
+  .prose :global(.fn-note-p + .fn-note-p) { margin-top: var(--space-2); }
+
+  /* Wide: sidenotes hang in the right margin, adjacent to their reference. */
+  @media (min-width: 69em) {
+    .prose :global(.fn-note) {
+      float: right;
+      clear: right;
+      width: var(--sidenote-width);
+      margin-right: calc(-1 * (var(--sidenote-width) + var(--sidenote-gap)));
+      margin-top: var(--space-1);
+      margin-bottom: var(--space-4);
+    }
+  }
+
+  /* Narrow: notes render as distinct blocks right after their marker. */
+  @media (max-width: 68.99em) {
+    .prose :global(.fn-note) {
+      display: block;
+      margin: var(--space-3) 0;
+      padding: var(--space-3) var(--space-4);
+      border-left: 2px solid var(--accent-border);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      background: var(--surface-warm);
+    }
+    /* Collapsed by default only when JS is available to reopen them. */
+    :global(html.js) .prose :global(.fn-note) { display: none; }
+    :global(html.js) .prose :global(.fn-note.is-open) { display: block; }
+    :global(html.js) .prose :global(.fn-toggle) { display: inline-block; }
+    :global(html.js) .prose :global(.fn-marker) { display: none; }
+  }
+
+  /* Print: every note visible, no toggles. */
+  @media print {
+    .prose :global(.fn-note) {
+      display: block !important;
+      float: none;
+      width: auto;
+      margin: var(--space-3) 0;
+    }
+    .prose :global(.fn-toggle) { display: none !important; }
+    .prose :global(.fn-marker) { display: inline !important; }
+  }
+
+  /* Fallback styling if a note ever stays in the end-of-post section
+     (see the plugin's inlineable rule). */
+  .prose :global(.footnotes) {
+    margin-top: var(--space-12);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--border-subtle);
+    font-size: var(--text-base);
+    color: var(--text-muted);
+  }
+  .prose :global(.footnotes h2) {
+    font-size: var(--text-sm);
+    font-family: var(--font-mono);
+    letter-spacing: var(--tracking-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .prose :global(sup a) {
+    text-decoration: none;
+    font-family: var(--font-mono);
+  }
+
+  .essay__close {
+    max-width: var(--container-prose);
+    margin-top: var(--space-16);
+  }
+</style>

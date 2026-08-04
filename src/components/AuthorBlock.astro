@@ -1,0 +1,37 @@
+---
+// The doorway (§4 of the blog spec): one short, understated block at the end
+// of every post. Edited here, in one place. No pop-ups, no interstitials,
+// no "if you enjoyed this" language.
+import { BOOKING_URL } from '../consts';
+import Subscribe from './Subscribe.astro';
+---
+
+<aside class="author" aria-label="About the author">
+  <p class="author__bio">
+    [AUTHOR BIO SLOT — copy to come: one or two sentences on who Henry is and what Async Forest Ltd does.]
+  </p>
+  <p class="author__links">
+    <a href={BOOKING_URL} target="_blank" rel="noopener">Book a call</a>
+    <span class="author__sep" aria-hidden="true">·</span>
+    <Subscribe />
+  </p>
+</aside>
+
+<style>
+  .author {
+    border-top: 1px solid var(--border-default);
+    padding-top: var(--space-8);
+  }
+  .author__bio {
+    color: var(--text-muted);
+    font-size: var(--text-base);
+  }
+  .author__links {
+    margin-top: var(--space-4);
+    font-size: var(--text-base);
+  }
+  .author__sep {
+    color: var(--text-subtle);
+    margin-inline: var(--space-2);
+  }
+</style>

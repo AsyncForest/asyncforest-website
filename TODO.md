@@ -13,7 +13,18 @@ fails if a file containing a slot token is missing from this list.
   The Trading Disclosures Regulations 2015 require it on the website, so **add the
   registered office line to `SiteFooter.astro` as soon as the AD01 change is filed.**
 
+## Writing section (added 2026-08-04)
+
+- `src/components/AuthorBlock.astro` — `[AUTHOR BIO SLOT]`: one or two sentences on
+  who Henry is and what Async Forest Ltd does, at the end of every post. Copy from
+  Henry (TODO-COPY).
+- `NEWSLETTER_URL` in `src/consts.ts` is empty (TODO-CONFIG) — provider not chosen
+  (likely Buttondown or Kit). Subscribe links fall back to `/rss.xml` until set.
+- `GOATCOUNTER_CODE` in `src/consts.ts` is empty (TODO-CONFIG) — analytics disabled
+  until a GoatCounter site code is set. No other analytics anywhere.
+
 ## Follow-ups
 
-- Writing/essays + RSS were removed for the lean launch (booking-first). Restore from git
-  history when real essays exist.
+- ~~Writing/essays + RSS were removed for the lean launch (booking-first). Restore from git
+  history when real essays exist.~~ Restored 2026-08-04 with the blog spec build:
+  `/writing/`, sidenote footnotes, full-content RSS, OG cards, robots.txt, WRITING.md.

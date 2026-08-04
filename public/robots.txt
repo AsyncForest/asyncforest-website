@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://asyncforest.com/sitemap-index.xml

@@ -1,0 +1,16 @@
+---
+// The one subscribe affordance (§6 of the blog spec). Provider not yet
+// chosen; the URL lives in NEWSLETTER_URL in src/consts.ts (TODO-CONFIG).
+// Until it is set, this falls back to a plain RSS link so the affordance
+// is never a dead end. No provider JavaScript embeds — link or plain HTML
+// form post only.
+import { NEWSLETTER_URL } from '../consts';
+---
+
+{
+  NEWSLETTER_URL !== '' ? (
+    <a href={NEWSLETTER_URL}>Subscribe by email</a>
+  ) : (
+    <a href="/rss.xml">Subscribe via RSS</a>
+  )
+}
