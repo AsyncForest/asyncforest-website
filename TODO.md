@@ -15,9 +15,8 @@ fails if a file containing a slot token is missing from this list.
 
 ## Writing section (added 2026-08-04)
 
-- `src/components/AuthorBlock.astro` — `[AUTHOR BIO SLOT]`: one or two sentences on
-  who Henry is and what Async Forest Ltd does, at the end of every post. Copy from
-  Henry (TODO-COPY).
+- ~~`[AUTHOR BIO SLOT]`~~ — filled 2026-08-21 with copy from Henry, in
+  `src/components/AuthorBlock.astro`. Shows at the end of every post.
 - `NEWSLETTER_URL` in `src/consts.ts` is empty (TODO-CONFIG) — provider not chosen
   (likely Buttondown or Kit). Subscribe links fall back to `/rss.xml` until set.
 - `GOATCOUNTER_CODE` in `src/consts.ts` is empty (TODO-CONFIG) — analytics disabled
