@@ -1,0 +1,132 @@
+---
+import Base from '../layouts/Base.astro';
+import { BOOKING_EMBED_URL, BOOKING_DIRECT_URL } from '../consts';
+// The one page on the site that loads a third party. Google's appointment
+// scheduler is embedded rather than linked out so the booking step keeps the
+// site's chrome around it. The embed is disclosed in the privacy notice —
+// keep the two in step if the provider ever changes again.
+//
+// This page uses the wide container, not container--narrow like the rest of
+// the site: Google switches the scheduler to a cramped single-column layout
+// below roughly 900px of frame width, so the narrow container would squeeze it
+// into a stacked column and clip the month grid. Prose inside keeps its own
+// max-width, so the wider container costs the copy nothing.
+---
+
+<Base
+  title="Book a call — Async Forest"
+  description="Pick a time to talk through the software or AI decision you're facing."
+>
+  <section class="booking container">
+    <div class="booking__head">
+      <p class="eyebrow">Book a call</p>
+      <h1>Tell me about the decision you're facing</h1>
+      <p class="booking__lede">
+        Pick a time that suits you. Say a little about the decision when you
+        book, and I'll come to the call having already thought about it.
+      </p>
+    </div>
+
+    <div class="booking__frame">
+      <p class="booking__pending">Loading the calendar from Google.</p>
+      <iframe
+        class="booking__embed"
+        src={BOOKING_EMBED_URL}
+        title="Booking calendar for Async Forest"
+        loading="eager"
+      ></iframe>
+    </div>
+
+    <script is:inline>
+      // The scheduler's own background is not opaque, so the waiting message
+      // has to be taken down rather than painted over — leave it up and it
+      // ghosts through the middle of the loaded widget. It starts hidden in
+      // CSS and is only raised here, so with JS off nothing shows through and
+      // the note under the frame still carries the way out.
+      (function () {
+        var frame = document.querySelector('.booking__frame');
+        var embed = document.querySelector('.booking__embed');
+        if (!frame || !embed) return;
+        frame.classList.add('is-pending');
+        embed.addEventListener('load', function () {
+          frame.classList.remove('is-pending');
+        });
+      })();
+    </script>
+
+    <p class="booking__note">
+      If the calendar doesn't load, you can
+      <a href={BOOKING_DIRECT_URL} target="_blank" rel="noopener">open it on Google</a>
+      or email <a href="mailto:henry@asyncforest.com">henry@asyncforest.com</a>
+      and I'll find you a time. It is embedded from Google Calendar, so opening
+      this page contacts Google's servers — the
+      <a href="/privacy/">privacy notice</a> explains what they collect.
+    </p>
+  </section>
+</Base>
+
+<style>
+  .booking {
+    padding-block: var(--section-y) var(--space-8);
+  }
+  .booking__head {
+    margin-bottom: var(--space-10);
+  }
+  .booking__lede {
+    font-size: var(--text-md);
+    color: var(--text-muted);
+    max-width: 58ch;
+  }
+
+  /* Card treatment so the third-party white box reads as part of the page
+     rather than a hole punched in it. Same tokens as the global .card. */
+  .booking__frame {
+    display: grid;
+    background: var(--surface-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-offset-md);
+    overflow: hidden;
+  }
+  /* Message and embed share one grid cell so the frame never collapses to a
+     blank slab while Google is still answering. */
+  .booking__frame > * { grid-area: 1 / 1; }
+  .booking__pending {
+    align-self: center;
+    justify-self: center;
+    margin: 0;
+    padding: var(--space-8);
+    font-size: var(--text-sm);
+    color: var(--text-muted);
+    visibility: hidden;
+  }
+  .booking__frame.is-pending .booking__pending { visibility: visible; }
+
+  /* Google gives the embed no resize message, so the height is ours to get
+     right: too short and the month grid and Google's own attribution get
+     clipped. These three tiers are measured against the scheduler's rendered
+     content height at each layout (700 / 900 / 1025px), plus headroom. The
+     breakpoints are on the viewport, which tracks the frame width because the
+     frame is always the container minus the gutter. Picking a date still
+     scrolls inside the frame once the slot list is long — unavoidable without
+     a resize handshake, and how Google's own snippet behaves. */
+  .booking__embed {
+    display: block;
+    width: 100%;
+    height: 700px;   /* wide two-column layout */
+    border: 0;
+  }
+  @media (max-width: 1023px) {
+    .booking__embed { height: 920px; }   /* two columns, compressed */
+  }
+  @media (max-width: 660px) {
+    .booking__embed { height: 1040px; }  /* fully stacked, phones */
+  }
+
+  .booking__note {
+    margin-top: var(--space-6);
+    max-width: 68ch;
+    font-size: var(--text-sm);
+    color: var(--text-muted);
+  }
+</style>

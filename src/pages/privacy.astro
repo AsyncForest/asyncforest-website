@@ -3,6 +3,9 @@ import Base from '../layouts/Base.astro';
 // Customer privacy notice, tightened from the ICO's generator output on
 // 2026-07-21. Substance (purposes, lawful bases, rights, ICO details) must
 // track what the generator produced — tighten wording, don't change meaning.
+// The "Cookies and embedded content" section is ours, not the generator's:
+// it exists because /book/ embeds Google's scheduler (added 2026-08-21).
+// If the booking provider changes, that section changes with it.
 // Deliberately company-voiced ("we" = Async Forest Ltd), overriding the
 // STYLESEED "you"/"I" rule: legal pages must not frame the company as an
 // individual (corporate-separation requirement — see STYLESEED voice note).
@@ -22,7 +25,7 @@ import Base from '../layouts/Base.astro';
         no. 17351665, and is the data controller for the personal
         information described here.
       </p>
-      <p class="privacy__updated">Last updated 21 July 2026</p>
+      <p class="privacy__updated">Last updated 21 August 2026</p>
     </div>
 
     <div class="privacy__body">
@@ -127,7 +130,32 @@ import Base from '../layouts/Base.astro';
       <ul>
         <li><strong>Our accountants</strong>, who process accounting records on our behalf as a data processor.</li>
         <li><strong>Professional or legal advisers</strong>, where an engagement or dispute requires it.</li>
+        <li>
+          <strong>Google</strong>, which provides the appointment scheduling
+          embedded on our booking page — see the section below.
+        </li>
       </ul>
+
+      <h2>Cookies and embedded content</h2>
+      <p>
+        We set no cookies of our own, and we use no advertising or cross-site
+        tracking. Any analytics we run are cookie-less and do not identify
+        individual visitors.
+      </p>
+      <p>
+        Our <a href="/book/">booking page</a> is the one exception: it embeds
+        Google Calendar's appointment scheduling. Opening that page contacts
+        Google's servers, which receive your IP address and browser details
+        and may set their own cookies in your browser. If you book a time, the
+        name, email address, and any notes you enter go to Google Calendar and
+        to us, and we use them to arrange and prepare for the meeting. Google
+        acts as an independent controller for what it collects through the
+        embed, on its own terms — see the
+        <a href="https://policies.google.com/privacy" rel="noopener">Google privacy policy</a>.
+        If you would rather not load the embed, email us instead at the
+        address above and we will arrange a time directly. No other page on
+        this site loads content from Google.
+      </p>
 
       <h2>How to complain</h2>
       <p>

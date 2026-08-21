@@ -2,7 +2,7 @@
 // The doorway (§4 of the blog spec): one short, understated block at the end
 // of every post. Edited here, in one place. No pop-ups, no interstitials,
 // no "if you enjoyed this" language.
-import { BOOKING_URL } from '../consts';
+import { BOOKING_PATH } from '../consts';
 import Subscribe from './Subscribe.astro';
 ---
 
@@ -11,7 +11,7 @@ import Subscribe from './Subscribe.astro';
     [AUTHOR BIO SLOT — copy to come: one or two sentences on who Henry is and what Async Forest Ltd does.]
   </p>
   <p class="author__links">
-    <a href={BOOKING_URL} target="_blank" rel="noopener">Book a call</a>
+    <a href={BOOKING_PATH}>Book a call</a>
     <span class="author__sep" aria-hidden="true">·</span>
     <Subscribe />
   </p>

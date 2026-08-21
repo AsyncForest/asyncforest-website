@@ -1,7 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import HeroForest from '../components/HeroForest.astro';
-import { BOOKING_URL } from '../consts';
+import { BOOKING_PATH } from '../consts';
 
 const testimonials = [
   {
@@ -55,7 +55,7 @@ const doors = [
       <p class="hero__sub">
         I'm Dr. Henry Franks, director of Async Forest Ltd. I have spent two decades researching agentic systems, building production machine learning in startups and enterprises, and teaching responsible AI. I'll help you make the right decisions about your AI strategy and architecture.
       </p>
-      <a class="btn btn--primary" href={BOOKING_URL} target="_blank" rel="noopener">Get in touch about your project</a>
+      <a class="btn btn--primary" href={BOOKING_PATH}>Get in touch about your project</a>
     </div>
   </section>
 
@@ -99,7 +99,7 @@ const doors = [
       If you're facing one of these decisions, the fastest way to start is to
       tell me about it.
     </p>
-    <a class="btn btn--primary" href={BOOKING_URL} target="_blank" rel="noopener">Tell me about the decision you're facing</a>
+    <a class="btn btn--primary" href={BOOKING_PATH}>Tell me about the decision you're facing</a>
   </section>
 </Base>
 

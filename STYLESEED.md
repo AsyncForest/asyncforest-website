@@ -32,6 +32,14 @@
                      full-width strata (blue-50 → accent-border → accent-active) with 45°
                      hatch dissolve edges, plus the brand-tree treeline (every tree keeps
                      the tint-behind offset)
+- Third-party UI:    embeds get the card treatment (surface-card, border-subtle, radius-lg,
+                     shadow-offset-md) so they read as part of the page, never a hole in it.
+                     Booking-page exception (2026-08-21, Henry): /book/ uses the WIDE
+                     container, not container--narrow — Google's scheduler collapses to a
+                     cramped stacked layout below ~900px of frame width. Its height is set
+                     in measured tiers (700 / 920 / 1040px) because the embed sends no
+                     resize message. Prose on that page keeps its own max-width, so the
+                     wider container costs the copy nothing
 - Voice:             sentence case everywhere · "you"/"I", never royal "we" · no emoji ·
                      warm, crisp, no hype · "technical observations, not legal advice"
                      EXCEPTION — legal/company pages (privacy notice, terms, disclosures)
