@@ -3,9 +3,13 @@ import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import Subscribe from '../../components/Subscribe.astro';
 
-// Drafts show in dev only. No pagination until there are more than 20 posts.
+// Drafts show in dev only; unlisted posts never show here. No pagination
+// until there are more than 20 posts.
 const posts = (
-  await getCollection('writing', ({ data }) => import.meta.env.DEV || !data.draft)
+  await getCollection(
+    'writing',
+    ({ data }) => (import.meta.env.DEV || !data.draft) && !data.unlisted
+  )
 ).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
 const fmt = new Intl.DateTimeFormat('en-GB', {

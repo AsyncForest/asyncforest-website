@@ -11,7 +11,7 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 const { Content } = await render(post);
-const { title, description, pubDate, updatedDate, ogImage } = post.data;
+const { title, description, pubDate, updatedDate, ogImage, unlisted } = post.data;
 
 const fmt = new Intl.DateTimeFormat('en-GB', {
   day: 'numeric',
@@ -53,6 +53,7 @@ const jsonLd = {
     document.documentElement.classList.add('js');
   </script>
   <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  {unlisted && <meta slot="head" name="robots" content="noindex" />}
 
   <article class="essay">
     <header class="essay__header">
@@ -263,6 +264,10 @@ const jsonLd = {
   }
   .prose :global(h2) { margin-top: var(--space-12); }
   .prose :global(h3) { margin-top: var(--space-8); }
+  .prose :global(h2 + h3) { margin-top: var(--space-4); }
+  /* Anchor targets clear the sticky site header (68px min-height). */
+  .prose :global(h2),
+  .prose :global(h3) { scroll-margin-top: calc(68px + var(--space-6)); }
 
   /* Links keep ink text but underline in the brand tint, waking to accent. */
   .prose :global(a) { text-decoration-color: var(--accent-border); }
@@ -277,7 +282,14 @@ const jsonLd = {
     border-image: linear-gradient(to bottom, var(--accent-border), var(--accent)) 1;
     color: var(--text-muted);
   }
-  .prose :global(blockquote p) { font-size: var(--text-md); }
+  .prose :global(blockquote p) {
+    font-size: var(--text-md);
+    margin-bottom: var(--space-2);
+  }
+  .prose :global(blockquote footer) {
+    font-size: var(--text-sm);
+    color: var(--text-muted);
+  }
 
   /* Thematic break: the 45° brand hatch, as on the hero's dissolve edges. */
   .prose :global(hr) {
@@ -345,6 +357,128 @@ const jsonLd = {
   .prose :global(h4:hover .heading-anchor),
   .prose :global(.heading-anchor:focus-visible) {
     opacity: 1;
+  }
+
+  /* --- Article furniture ----------------------------------------------------
+     Figures, callouts, stat blocks, the contents card and reading lists, for
+     posts whose body is exported HTML (see the ai-2026 repo's build-article
+     tool). .callout / .callout__label / .lede themselves come from global.css. */
+
+  .prose :global(.fig) { margin: var(--space-8) 0; }
+  .prose :global(.fig img) {
+    display: block;
+    width: auto;
+    max-width: 100%;
+    max-height: 80vh;
+    border: 1px solid var(--border-subtle);
+  }
+  .prose :global(.fig--half) { max-width: 60%; }
+  .prose :global(.fig__pair) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-4);
+    align-items: start;
+  }
+  .prose :global(.fig__pair img) {
+    width: 100%;
+    max-height: none;
+  }
+  @media (max-width: 40em) {
+    .prose :global(.fig__pair) { grid-template-columns: 1fr; }
+    .prose :global(.fig--half) { max-width: 100%; }
+  }
+  .prose :global(figcaption) {
+    margin-top: var(--space-3);
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
+    color: var(--text-muted);
+    overflow-wrap: anywhere;
+  }
+
+  .prose :global(.callout) { margin: var(--space-8) 0; }
+  .prose :global(.callout p) {
+    margin: 0;
+    font-size: var(--text-md);
+    color: var(--text-strong);
+  }
+
+  /* Stat block: same echo card as the footnotes. */
+  .prose :global(.stats) {
+    margin: var(--space-8) 0;
+    padding: var(--space-5) var(--space-6);
+    border: 1px solid var(--accent-border);
+    border-top: 0;
+    border-left: 0;
+    border-radius: var(--radius-sm);
+    background: var(--surface-warm);
+    box-shadow: var(--shadow-echo-sm);
+  }
+  .prose :global(.stats__row) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-6) var(--space-10);
+  }
+  .prose :global(.stat strong) {
+    display: block;
+    font-size: var(--text-xl);
+    line-height: var(--leading-tight);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-tight);
+  }
+  .prose :global(.stat span) {
+    font-size: var(--text-sm);
+    color: var(--text-muted);
+  }
+
+  /* Reading lists: hanging indent, no bullets. */
+  .prose :global(ul.reading) {
+    list-style: none;
+    padding: 0;
+  }
+  .prose :global(ul.reading li) {
+    padding-left: var(--space-5);
+    text-indent: calc(-1 * var(--space-5));
+    margin-bottom: var(--space-3);
+    font-size: var(--text-base);
+    overflow-wrap: anywhere;
+  }
+
+  /* Contents card: sections with their subsections; subsections drop on phones. */
+  .prose :global(.toc) {
+    margin: var(--space-10) 0 0;
+    padding: var(--space-5) var(--space-6);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    background: var(--surface-card);
+    box-shadow: var(--shadow-offset-md);
+  }
+  .prose :global(.toc ol) {
+    margin: 0;
+    padding-left: 1.4em;
+  }
+  .prose :global(.toc li) { margin-bottom: var(--space-3); }
+  .prose :global(.toc li > a) {
+    font-weight: var(--weight-medium);
+    text-decoration: none;
+  }
+  .prose :global(.toc li > a:hover) { text-decoration: underline; }
+  .prose :global(.toc__subs) {
+    display: block;
+    font-size: var(--text-sm);
+    color: var(--text-muted);
+    line-height: var(--leading-normal);
+  }
+  .prose :global(.toc__subs a) {
+    color: var(--text-muted);
+    text-decoration: none;
+  }
+  .prose :global(.toc__subs a:hover) {
+    color: var(--accent);
+    text-decoration: underline;
+  }
+  .prose :global(.toc__sep) { color: var(--gray-400); }
+  @media (max-width: 40em) {
+    .prose :global(.toc__subs) { display: none; }
   }
 
   /* --- Footnotes -----------------------------------------------------------
@@ -453,11 +587,13 @@ const jsonLd = {
       border-radius: var(--radius-sm);
       box-shadow: var(--shadow-echo-sm);
     }
-    /* Collapsed by default only when JS is available to reopen them. */
-    :global(html.js) .prose :global(.fn-note) { display: none; }
+    /* Collapsed by default only when JS is available to reopen them — and
+       only for notes that have a toggle. Posts whose body is raw HTML ship
+       .fn-marker/.fn-note without a toggle; those stay visible inline. */
+    :global(html.js) .prose :global(.fn-toggle + .fn-note) { display: none; }
     :global(html.js) .prose :global(.fn-note.is-open) { display: block; }
     :global(html.js) .prose :global(.fn-toggle) { display: inline-block; }
-    :global(html.js) .prose :global(.fn-marker) { display: none; }
+    :global(html.js) .prose :global(.fn-marker:has(+ .fn-toggle)) { display: none; }
   }
 
   /* Print: every note visible, no toggles. */

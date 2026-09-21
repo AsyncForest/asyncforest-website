@@ -18,6 +18,10 @@ const writing = defineCollection({
     // Drafts build in dev but are excluded from production builds, listings,
     // RSS, and the sitemap.
     draft: z.boolean().default(false),
+    // Unlisted posts build and are reachable at their URL, but are excluded
+    // from the /writing/ listing, RSS and the sitemap, and carry a noindex
+    // robots meta. For smoke-testing a post on production before linking it.
+    unlisted: z.boolean().default(false),
     slug: z.string().optional(),
     // Schema only for now — no tag pages yet.
     tags: z.array(z.string()).optional(),

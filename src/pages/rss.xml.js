@@ -9,7 +9,9 @@ import { createMarkdownProcessor } from '@astrojs/markdown-remark';
 const processor = await createMarkdownProcessor({ gfm: true, smartypants: true });
 
 export async function GET(context) {
-  const posts = (await getCollection('writing', ({ data }) => !data.draft)).sort(
+  const posts = (
+    await getCollection('writing', ({ data }) => !data.draft && !data.unlisted)
+  ).sort(
     (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
   );
   const items = [];
