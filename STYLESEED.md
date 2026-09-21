@@ -31,7 +31,16 @@
                      decoration elsewhere. Homepage-only exception: the hero landscape —
                      full-width strata (blue-50 → accent-border → accent-active) with 45°
                      hatch dissolve edges, plus the brand-tree treeline (every tree keeps
-                     the tint-behind offset)
+                     the tint-behind offset).
+                     Essay-page exception (2026-08-04, Henry): brand micro-echoes are
+                     allowed on /writing/<slug>/ — tri-state strip above the title
+                     (hatch/pixel/solid, accent ramp), hatch hr, blockquote rule ramping
+                     accent-border→accent, footnote cards with the echo shadow
+                     (--shadow-echo-*: tint block + knockout gap, the mark's
+                     tint-tree-behind, in the STANDARD down-right offset position —
+                     Henry kept the default direction), tint fir dingbat at essay end. Keep all
+                     of it tint-weighted (#cdd9ee/#eef2fb); accent ramp only at strip
+                     scale. Essay measure is 75ch (site copy stays 68ch)
 - Third-party UI:    embeds get the card treatment (surface-card, border-subtle, radius-lg,
                      shadow-offset-md) so they read as part of the page, never a hole in it.
                      Booking-page exception (2026-08-21, Henry): /book/ uses the WIDE

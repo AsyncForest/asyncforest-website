@@ -56,6 +56,24 @@ const jsonLd = {
 
   <article class="essay">
     <header class="essay__header">
+      <!-- The mark's three texture states, unrolled left-to-right (hatch /
+           pixel / solid stepping the accent ramp) — the brand strip. -->
+      <div class="essay__strip" aria-hidden="true">
+        <svg width="72" height="6" viewBox="0 0 72 6">
+          <defs>
+            <pattern id="es-hatch" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+              <rect width="1.8" height="4" fill="var(--accent)"></rect>
+            </pattern>
+            <pattern id="es-px" width="4" height="4" patternUnits="userSpaceOnUse">
+              <rect width="2" height="2" fill="var(--accent-hover)"></rect>
+              <rect x="2" y="2" width="2" height="2" fill="var(--accent-hover)"></rect>
+            </pattern>
+          </defs>
+          <rect width="24" height="6" fill="url(#es-hatch)"></rect>
+          <rect x="24" width="24" height="6" fill="url(#es-px)"></rect>
+          <rect x="48" width="24" height="6" fill="var(--accent-active)"></rect>
+        </svg>
+      </div>
       <p class="essay__date mono">
         <time datetime={isoDay(pubDate)}>{fmt.format(pubDate)}</time>
         {
@@ -73,14 +91,30 @@ const jsonLd = {
       <Content />
     </div>
 
+    <!-- End-of-essay mark: the fir as a tint dingbat, echo tree behind. -->
+    <div class="essay__end" aria-hidden="true">
+      <svg width="19" height="17" viewBox="0 0 38 34">
+        <path d="M21 1 L33.5 28.5 L8.5 28.5 Z" fill="var(--accent-soft)"></path>
+        <path
+          d="M17 2.5 L29.5 30 L4.5 30 Z"
+          fill="var(--accent-border)"
+          stroke="var(--surface-page)"
+          stroke-width="2.4"
+          stroke-linejoin="round"
+        ></path>
+        <rect x="15.6" y="30" width="2.8" height="3.2" fill="var(--accent-border)"></rect>
+      </svg>
+    </div>
+
     <footer class="essay__close">
       <AuthorBlock />
     </footer>
   </article>
 
-  <!-- The one permitted enhancement (§2/§8): expand-in-place footnote toggles
-       on narrow viewports. Without JS the `js` class is never added, so notes
-       stay visible inline by default. -->
+  <!-- Footnote enhancements (§2/§8): expand-in-place toggles on narrow
+       viewports, and sentence ↔ note hover pairing. Without JS the `js`
+       class is never added, notes stay visible inline, and no pairing spans
+       are created — the essay reads fine either way. -->
   <script is:inline>
     document.querySelectorAll('.fn-toggle').forEach(function (btn) {
       btn.addEventListener('click', function () {
@@ -90,13 +124,111 @@ const jsonLd = {
         btn.setAttribute('aria-expanded', String(open));
       });
     });
+
+    // Wrap the sentence preceding each footnote marker in a span so the
+    // sentence and its note can highlight each other on hover. Sentence
+    // start = after the previous ".!?…" (plus closing quotes/brackets and
+    // whitespace), never crossing another note or the paragraph start.
+    document.querySelectorAll('.prose .fn-marker').forEach(function (marker) {
+      var toggle = marker.nextElementSibling;
+      var note =
+        toggle && toggle.classList.contains('fn-toggle')
+          ? document.getElementById(toggle.getAttribute('aria-controls'))
+          : null;
+      var para = marker.closest('p, li');
+      if (!note || !para) return;
+
+      var parts = [];
+      (function collect(el) {
+        for (var i = 0; i < el.childNodes.length; i++) {
+          var n = el.childNodes[i];
+          if (n === marker) return true;
+          if (n.nodeType === 1) {
+            var c = n.classList;
+            if (c.contains('fn-marker') || c.contains('fn-toggle') || c.contains('fn-note')) {
+              parts.length = 0; // a sentence never crosses another note
+              continue;
+            }
+            if (collect(n)) return true;
+          } else if (n.nodeType === 3) {
+            parts.push(n);
+          }
+        }
+        return false;
+      })(para);
+      if (!parts.length) return;
+
+      var text = parts
+        .map(function (n) {
+          return n.nodeValue;
+        })
+        .join('');
+      var end = text.length;
+      while (end > 0 && /\s/.test(text[end - 1])) end--;
+      var i = end;
+      while (i > 0 && /["'”’)\]]/.test(text[i - 1])) i--;
+      while (i > 0 && /[.!?…]/.test(text[i - 1])) i--;
+      var start = 0;
+      var re = /[.!?…]["'”’)\]]*\s+/g;
+      var head = text.slice(0, i);
+      for (var m = re.exec(head); m; m = re.exec(head)) start = m.index + m[0].length;
+      if (start >= end || !text.slice(start, end).trim()) return;
+
+      var startNode = null;
+      var offset = 0;
+      for (var p = 0, acc = 0; p < parts.length; p++) {
+        var len = parts[p].nodeValue.length;
+        if (start < acc + len) {
+          startNode = parts[p];
+          offset = start - acc;
+          break;
+        }
+        acc += len;
+      }
+      if (!startNode) return;
+
+      var range = document.createRange();
+      // If the sentence starts inside a nested inline element (em, a, …),
+      // widen to that element's edge so the wrap never splits it.
+      if (startNode.parentNode === marker.parentNode) {
+        range.setStart(startNode, offset);
+      } else {
+        var anc = startNode;
+        while (anc !== para && anc.parentNode !== marker.parentNode) anc = anc.parentNode;
+        if (anc.parentNode !== marker.parentNode) return;
+        range.setStartBefore(anc);
+      }
+      range.setEndBefore(marker);
+      var span = document.createElement('span');
+      span.className = 'fn-context';
+      try {
+        span.appendChild(range.extractContents());
+        range.insertNode(span);
+      } catch (e) {
+        return;
+      }
+
+      [span, note].forEach(function (el) {
+        el.addEventListener('mouseenter', function () {
+          span.classList.add('is-hl');
+          note.classList.add('is-hl');
+        });
+        el.addEventListener('mouseleave', function () {
+          span.classList.remove('is-hl');
+          note.classList.remove('is-hl');
+        });
+      });
+    });
   </script>
 </Base>
 
 <style>
-  /* Reading column: 68ch measure. On wide viewports the article grows to make
-     room for the sidenote margin; the text column stays capped by .prose > *. */
+  /* Reading column: essays run a wider measure than site copy (75ch vs the
+     global 68ch — long-form earns it). On wide viewports the article grows to
+     make room for the sidenote margin; the text column stays capped by
+     .prose > *. */
   .essay {
+    --container-prose: 75ch;
     --sidenote-width: 16rem;
     --sidenote-gap: 3rem;
     max-width: calc(var(--container-prose) + 2 * var(--gutter));
@@ -104,7 +236,7 @@ const jsonLd = {
     padding-inline: var(--gutter);
     padding-block: var(--section-y) var(--space-8);
   }
-  @media (min-width: 69em) {
+  @media (min-width: 72em) {
     .essay {
       max-width: calc(
         var(--container-prose) + 2 * var(--gutter) + var(--sidenote-width) + var(--sidenote-gap)
@@ -115,6 +247,10 @@ const jsonLd = {
   .essay__header {
     max-width: var(--container-prose);
     margin-bottom: var(--space-12);
+  }
+  .essay__strip {
+    line-height: 0;
+    margin-bottom: var(--space-5);
   }
   .essay__date {
     font-size: var(--text-xs);
@@ -127,16 +263,33 @@ const jsonLd = {
   }
   .prose :global(h2) { margin-top: var(--space-12); }
   .prose :global(h3) { margin-top: var(--space-8); }
+
+  /* Links keep ink text but underline in the brand tint, waking to accent. */
+  .prose :global(a) { text-decoration-color: var(--accent-border); }
+  .prose :global(a:hover) { color: var(--accent); }
+
+  /* Blockquote rule steps the accent ramp downwards, like the mark's thirds
+     (tint at the top, full accent at the root). */
   .prose :global(blockquote) {
     margin: var(--space-8) 0;
     padding-left: var(--space-6);
-    border-left: 2px solid var(--border-strong);
+    border-left: 2px solid var(--accent-border);
+    border-image: linear-gradient(to bottom, var(--accent-border), var(--accent)) 1;
     color: var(--text-muted);
   }
   .prose :global(blockquote p) { font-size: var(--text-md); }
+
+  /* Thematic break: the 45° brand hatch, as on the hero's dissolve edges. */
   .prose :global(hr) {
     width: var(--space-16);
+    height: 7px;
     margin-inline: 0;
+    border: 0;
+    background: repeating-linear-gradient(
+      45deg,
+      var(--accent-border) 0 3px,
+      transparent 3px 7px
+    );
   }
   .prose :global(img) {
     max-width: 100%;
@@ -221,16 +374,37 @@ const jsonLd = {
     line-height: 1.5;
     vertical-align: 0.2em;
     cursor: pointer;
+    box-shadow: 2px 1.5px 0 0 var(--accent-border);
+    transition: box-shadow var(--duration-fast) var(--ease-out),
+                transform var(--duration-fast) var(--ease-out);
   }
   .prose :global(.fn-toggle[aria-expanded='true']) {
     background: var(--accent);
     border-color: var(--accent);
     color: var(--text-on-accent);
+    box-shadow: none;
+    transform: translate(1px, 1px);
   }
   .prose :global(.fn-note) {
     font-size: var(--text-sm);
     line-height: var(--leading-normal);
     color: var(--text-muted);
+    transition: border-color var(--duration-normal) var(--ease-out),
+                background-color var(--duration-normal) var(--ease-out);
+  }
+
+  /* Hover pairing (spans added by the script below): hovering a note card
+     washes the sentence it annotates, and vice versa. */
+  .prose :global(.fn-context) {
+    border-radius: 2px;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+    transition: background-color var(--duration-fast) var(--ease-out);
+  }
+  .prose :global(.fn-context.is-hl) { background: var(--accent-soft); }
+  .prose :global(.fn-note.is-hl) {
+    border-color: var(--accent);
+    background: var(--surface-card);
   }
   .prose :global(.fn-note-label) {
     font-family: var(--font-mono);
@@ -242,27 +416,42 @@ const jsonLd = {
   .prose :global(.fn-note-p) { display: block; }
   .prose :global(.fn-note-p + .fn-note-p) { margin-top: var(--space-2); }
 
-  /* Wide: sidenotes hang in the right margin, adjacent to their reference. */
-  @media (min-width: 69em) {
+  /* Wide: sidenotes hang in the right margin as small cards, adjacent to
+     their reference. The shadow is the mark's echo tree: a tint block with a
+     knockout gap, in the standard offset-block position. */
+  @media (min-width: 72em) {
     .prose :global(.fn-note) {
       float: right;
       clear: right;
       width: var(--sidenote-width);
       margin-right: calc(-1 * (var(--sidenote-width) + var(--sidenote-gap)));
       margin-top: var(--space-1);
-      margin-bottom: var(--space-4);
+      margin-bottom: var(--space-5);
+      padding: var(--space-3) var(--space-4);
+      background: var(--surface-warm);
+      /* Hairline only on the shadow-side edges; top/left stay open. */
+      border: 1px solid var(--accent-border);
+      border-top: 0;
+      border-left: 0;
+      border-radius: var(--radius-sm);
+      box-shadow: var(--shadow-echo-sm);
     }
   }
 
-  /* Narrow: notes render as distinct blocks right after their marker. */
-  @media (max-width: 68.99em) {
+  /* Narrow: notes render as cards right after their marker, with the same
+     echo elevation as the sidenotes. */
+  @media (max-width: 71.99em) {
     .prose :global(.fn-note) {
       display: block;
-      margin: var(--space-3) 0;
+      margin: var(--space-4) 0;
       padding: var(--space-3) var(--space-4);
-      border-left: 2px solid var(--accent-border);
-      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
       background: var(--surface-warm);
+      /* Hairline only on the shadow-side edges; top/left stay open. */
+      border: 1px solid var(--accent-border);
+      border-top: 0;
+      border-left: 0;
+      border-radius: var(--radius-sm);
+      box-shadow: var(--shadow-echo-sm);
     }
     /* Collapsed by default only when JS is available to reopen them. */
     :global(html.js) .prose :global(.fn-note) { display: none; }
@@ -304,8 +493,14 @@ const jsonLd = {
     font-family: var(--font-mono);
   }
 
+  .essay__end {
+    max-width: var(--container-prose);
+    margin-top: var(--space-10);
+    line-height: 0;
+  }
+
   .essay__close {
     max-width: var(--container-prose);
-    margin-top: var(--space-16);
+    margin-top: var(--space-12);
   }
 </style>

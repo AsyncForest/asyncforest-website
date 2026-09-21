@@ -148,6 +148,12 @@
   --shadow-offset-ink: 3px 3px 0 0 var(--gray-400);
   --shadow-ring: 0 0 0 3px hsl(220 9% 46% / 0.30);
 
+  /* Brand echo: the mark's tint-tree-behind as elevation — a tint block with
+     a knockout gap of page colour between card and echo, sitting in the
+     standard offset-block position (down-right). See STYLESEED "Brand mark". */
+  --shadow-echo-sm: 2px 1.5px 0 0 var(--surface-page), 4px 3px 0 0 var(--accent-border);
+  --shadow-echo-md: 2.5px 2px 0 0 var(--surface-page), 5px 4px 0 0 var(--accent-border);
+
   /* --- Motion: Silk ------------------------------------------------------------------ */
   --ease-out:    cubic-bezier(0.22, 1, 0.36, 1);
   --duration-fast:   120ms;

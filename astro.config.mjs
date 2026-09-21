@@ -3,6 +3,7 @@ import sitemap from '@astrojs/sitemap';
 import { rehypeHeadingIds } from '@astrojs/markdown-remark';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypeSidenotes from './src/plugins/rehype-sidenotes.mjs';
+import rehypeNewTabLinks from './src/plugins/rehype-new-tab-links.mjs';
 
 export default defineConfig({
   site: 'https://asyncforest.com',
@@ -22,6 +23,7 @@ export default defineConfig({
         },
       ],
       rehypeSidenotes,
+      rehypeNewTabLinks,
     ],
   },
 });
