@@ -19,8 +19,8 @@ fails if a file containing a slot token is missing from this list.
   `src/components/AuthorBlock.astro`. Shows at the end of every post.
 - `NEWSLETTER_URL` in `src/consts.ts` is empty (TODO-CONFIG) — provider not chosen
   (likely Buttondown or Kit). Subscribe links fall back to `/rss.xml` until set.
-- `GOATCOUNTER_CODE` in `src/consts.ts` is empty (TODO-CONFIG) — analytics disabled
-  until a GoatCounter site code is set. No other analytics anywhere.
+- ~~`GOATCOUNTER_CODE` in `src/consts.ts`~~ — set 2026-09-21 (`asyncforest`); dashboard at
+  https://asyncforest.goatcounter.com. No other analytics anywhere.
 
 ## Follow-ups
 

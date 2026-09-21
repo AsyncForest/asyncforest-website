@@ -3,7 +3,7 @@ title: "The multi-agent society"
 description: "A primer on AI and society for non-technical readers. How these machines learn, what happens when you give them goals, and who is left to blame."
 pubDate: 2026-09-20
 draft: false
-unlisted: true
+unlisted: false
 tags:
   - ai
 ---

@@ -21,6 +21,6 @@ export const BOOKING_DIRECT_URL = GOOGLE_SCHEDULE;
 export const NEWSLETTER_URL = '';
 
 // Privacy-friendly, cookie-less analytics (GoatCounter — no consent banner
-// needed). TODO-CONFIG: set the GoatCounter site code to enable; empty
-// disables the script entirely. Dev builds never load it either way.
-export const GOATCOUNTER_CODE = '';
+// needed). The site code is the subdomain of the GoatCounter dashboard;
+// empty disables the script entirely. Dev builds never load it either way.
+export const GOATCOUNTER_CODE = 'asyncforest';
